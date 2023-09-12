@@ -44,20 +44,20 @@ module "eks" {
   }
 
 
-  # aws-auth configmap
-  manage_aws_auth_configmap = true
+  # # aws-auth configmap
+  # manage_aws_auth_configmap = true
 
-    aws_auth_users = [
-      {
-        userarn  = "arn:aws:iam::842851109414:user/kenny"
-        username = "kenny"
-        groups   = ["system:masters"]
-      },
-    ]
+  #   aws_auth_users = [
+  #     {
+  #       userarn  = "arn:aws:iam::842851109414:user/kenny"
+  #       username = "kenny"
+  #       groups   = ["system:masters"]
+  #     },
+  #   ]
 
-  aws_auth_accounts = [
-    "842851109414",
-  ]
+  # aws_auth_accounts = [
+  #   "842851109414",
+  # ]
 
   tags = {
     Environment = var.stack
