@@ -1,7 +1,7 @@
 #A pipeline thats a combination from stuff I saw at work and my own desire to have all my terraform build as an IAM role that Gitlab assumes (hence the token stuff)
 
 image:
-  name: "$CI_TEMPLATE_REGISTRY_HOST/gitlab-org/terraform-images/releases/1.4.0"
+  name: "$CI_TEMPLATE_REGISTRY_HOST/gitlab-org/terraform-images/releases/v1.4.0"
 
 
 variables:
