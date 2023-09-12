@@ -63,7 +63,7 @@ dev-plan:
     - gitlab-terraform plan-json
   variables:
     ENVIRONMENT: dev  
-  <<: *artifact
+  <<: *artifacts
   <<: *id_token
 
 
@@ -75,7 +75,7 @@ dev-apply:
     - gitlab-terraform apply
   variables:
     ENVIRONMENT: dev  
-  <<: *artifact
+  <<: *artifacts
   <<: *id_token
 
 
@@ -88,6 +88,6 @@ dev-destroy:
   when: manual
   variables:
     ENVIRONMENT: dev  
-  <<: *artifact
+  <<: *artifacts
   <<: *id_token
  
