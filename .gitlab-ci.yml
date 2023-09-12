@@ -74,6 +74,7 @@ dev-apply:
     - cd dev
     - gitlab-terraform init
     - gitlab-terraform apply
+  when: manual
   variables:
     ENVIRONMENT: dev  
   <<: *artifacts
