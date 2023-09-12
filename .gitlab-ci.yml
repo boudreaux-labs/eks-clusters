@@ -35,6 +35,7 @@ stages:
       name: plan
       paths:
       - ${TF_ROOT}/plan.cache
+      - ${TF_ROOT}/plan.json
       reports:
         terraform: ${TF_ROOT}/plan.json
 
