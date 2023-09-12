@@ -5,13 +5,14 @@ image:
 
 
 variables:
+  TF_ROOT: ${CI_PROJECT_DIR}  # The relative path to the root directory of the Terraform project
   TF_STATE_NAME: default      # The name of the state file used by the GitLab Managed Terraform state backend
 
 
-# cache:
-#   key: "${TF_ROOT}"
-#   paths:
-#     - ${TF_ROOT}/.terraform/
+cache:
+  key: "${TF_ROOT}"
+  paths:
+    - ${TF_ROOT}/${ENVIRONMENT}/.terraform/
 
 #This runs before the 'script block in every job below. It sets the Profile and Web Identity Token, within the AWS config file.
 #For this to work you also need to set a Gitlab CICD variable of 'AWS_PROFILE' with a value of 'oidc'. This takes the place of key CICD variables.
@@ -33,10 +34,10 @@ stages:
     artifacts:
       name: plan
       paths:
-      - ${ENVIRONMENT}/${ENVIRONMENT}.cache
-      - ${ENVIRONMENT}-full-plan.json
+      - ${TF_ROOT}/${ENVIRONMENT}/${ENVIRONMENT}.cache
+      - ${TF_ROOT}/${ENVIRONMENT}-full-plan.json
       reports:
-        terraform: ${ENVIRONMENT}.json
+        terraform: ${TF_ROOT}/${ENVIRONMENT}/${ENVIRONMENT}.json
 
 .id_token: &id_token
     id_tokens:
