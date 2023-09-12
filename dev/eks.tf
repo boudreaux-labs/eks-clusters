@@ -26,6 +26,7 @@ module "eks" {
   control_plane_subnet_ids = module.vpc.private_subnets
 
 
+
   # EKS Managed Node Group(s)
   eks_managed_node_group_defaults = {
     instance_types = ["t3.large"]
@@ -55,9 +56,9 @@ module "eks" {
       },
     ]
 
-  # aws_auth_accounts = [
-  #   "842851109414",
-  # ]
+  aws_auth_accounts = [
+    "842851109414",
+  ]
 
   tags = {
     Environment = var.stack
