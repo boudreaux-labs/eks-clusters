@@ -47,14 +47,6 @@ module "eks" {
   # aws-auth configmap
   manage_aws_auth_configmap = true
 
-  #   aws_auth_roles = [
-  #     {
-  #       rolearn  = "arn:aws:iam::842851109414:role/boudreaux-admin"
-  #       username = "boudreaux-admin"
-  #       groups   = ["system:masters"]
-  #     },
-  #   ]
-
     aws_auth_users = [
       {
         userarn  = "arn:aws:iam::842851109414:user/kenny"
