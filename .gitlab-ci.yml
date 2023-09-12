@@ -1,0 +1,93 @@
+#A pipeline thats a combination from stuff I saw at work and my own desire to have all my terraform build as an IAM role that Gitlab assumes (hence the token stuff)
+
+image:
+  name: "$CI_TEMPLATE_REGISTRY_HOST/gitlab-org/terraform-images/releases/1.1:v0.43.0"
+
+
+variables:
+  TF_ROOT: ${CI_PROJECT_DIR}  # The relative path to the root directory of the Terraform project
+
+
+cache:
+  key: "${TF_ROOT}"
+  paths:
+    - ${TF_ROOT}/.terraform/
+
+#This runs before the 'script block in every job below. It sets the Profile and Web Identity Token, within the AWS config file.
+#For this to work you also need to set a Gitlab CICD variable of 'AWS_PROFILE' with a value of 'oidc'. This takes the place of key CICD variables.
+default:
+  before_script: 
+  - mkdir -p ~/.aws
+  - echo "${MY_OIDC_TOKEN}" > /tmp/web_identity_token
+  - echo -e "[profile oidc]\nrole_arn=${ROLE_ARN}\nweb_identity_token_file=/tmp/web_identity_token" > ~/.aws/config
+  - cat ~/.aws/config
+
+
+stages:
+  - validate
+  - plan
+  - apply
+  - destroy
+  
+.artifacts: &artifacts
+    artifacts:
+      name: plan
+      paths:
+      - ${ENVIRONMENT}/${ENVIRONMENT}.cache
+      - ${ENVIRONMENT}-full-plan.json
+      reports:
+        terraform: ${ENVIRONMENT}.json
+
+.id_token: &id_token
+    id_tokens:
+      MY_OIDC_TOKEN:
+        aud: https://gitlab.com
+
+
+dev-validate: 
+  stage: validate
+  script:
+    - cd ${ENVIRONMENT}
+    - gitlab-terraform init
+    - gitlab-terraform validate
+  variables:
+    ENVIRONMENT: dev    
+
+
+dev-plan: 
+  stage: plan
+  script:
+    - cd ${ENVIRONMENT}
+    - gitlab-terraform init
+    - gitlab-terraform plan
+    - gitlab-terraform plan-json
+  variables:
+    ENVIRONMENT: dev  
+  <<: *artifact
+  <<: *id_token
+
+
+dev-apply: 
+  stage: apply
+  script:
+    - cd ${ENVIRONMENT}
+    - gitlab-terraform init
+    - gitlab-terraform apply
+  variables:
+    ENVIRONMENT: dev  
+  <<: *artifact
+  <<: *id_token
+
+
+dev-destroy: 
+  stage: destroy
+  script:
+    - cd ${ENVIRONMENT}
+    - gitlab-terraform init
+    - gitlab-terraform destroy
+  when: manual
+  variables:
+    ENVIRONMENT: dev  
+  <<: *artifact
+  <<: *id_token
+ 
