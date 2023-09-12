@@ -28,7 +28,7 @@ module "eks" {
 
   # EKS Managed Node Group(s)
   eks_managed_node_group_defaults = {
-    instance_types = ["m6i.large", "m5.large", "m5n.large", "m5zn.large"]
+    instance_types = ["t3.large"]
   }
 
   eks_managed_node_groups = {
@@ -45,15 +45,15 @@ module "eks" {
 
 
   # # aws-auth configmap
-  # manage_aws_auth_configmap = true
+  manage_aws_auth_configmap = true
 
-  #   aws_auth_users = [
-  #     {
-  #       userarn  = "arn:aws:iam::842851109414:user/kenny"
-  #       username = "kenny"
-  #       groups   = ["system:masters"]
-  #     },
-  #   ]
+    aws_auth_users = [
+      {
+        userarn  = "arn:aws:iam::842851109414:user/kenny"
+        username = "kenny"
+        groups   = ["system:masters"]
+      },
+    ]
 
   # aws_auth_accounts = [
   #   "842851109414",
