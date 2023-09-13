@@ -11,3 +11,6 @@ variable "cluster_version" {
   default = "1.27"
 }
 
+variable "cluster_name" {
+  default = "eks-dev"
+}
