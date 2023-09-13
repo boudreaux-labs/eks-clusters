@@ -19,7 +19,7 @@ provider "kubernetes" {
 
 output "cluster_id" {
   description = "The ID of the cluster."
-  value       = module.aws_eks_cluster.cluster_id
+  value       = module.eks.cluster_id
 }
 #END
 
