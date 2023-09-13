@@ -1,5 +1,23 @@
 #Taken from example on https://github.com/terraform-aws-modules/terraform-aws-eks with a few values moved out into variables.tf, and a few sections removed like self managed nodes and Fargate
 
+#Terraform needs to connect the the created cluster and use the cluster credentials to create the aws-auth configmap. Add this to the file that is creating the EKS cluster. 
+#https://stackoverflow.com/questions/69655605/configmaps-aws-auth-not-found
+
+provider "kubernetes" {
+  host                   = data.aws_eks_cluster.default.endpoint
+  cluster_ca_certificate = base64decode(data.aws_eks_cluster.default.certificate_authority[0].data)
+  token                  = data.aws_eks_cluster_auth.default.token
+}
+
+data "aws_eks_cluster" "default" {
+  name = module.eks.cluster_name
+}
+
+data "aws_eks_cluster_auth" "default" {
+  name = module.eks.cluster_name
+}
+#END
+
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "19.16.0"
