@@ -38,5 +38,8 @@ module "ebs_csi_irsa" {
     }
   }
 
-  tags = local.tags
+  tags = {
+    Environment = var.stack
+    Terraform   = "true"
+  }
 }
