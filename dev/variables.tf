@@ -14,3 +14,12 @@ variable "cluster_version" {
 variable "cluster_name" {
   default = "eks-dev"
 }
+
+variable "cluster_host" {
+  type        = string
+  description = "cluster host endpoint"
+}
+variable "cluster_ca_certificate" {
+  type        = string
+  description = "cluster certificate"
+}
