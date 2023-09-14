@@ -1,6 +1,6 @@
 
 output "kubeconfig_command" {
-  value       = "aws eks update-kubeconfig --name ${var.cluster_name} --region ${var.region} --role-arn ${aws_iam_role.masters.arn}"
+  value       = "aws eks update-kubeconfig --name ${var.cluster_name} --region ${var.region} --role-arn <your role here>"
   description = "eks command to update kubeconfig and connect to cluster"
 }
 
