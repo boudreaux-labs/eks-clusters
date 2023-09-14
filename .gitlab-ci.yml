@@ -23,8 +23,9 @@ default:
   - cat ~/.aws/config
   - curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
   - unzip awscliv2.zip
-  - ./aws/install
   - chmod +x /aws/install
+  - ./aws/install
+
 
 stages:
   - validate
