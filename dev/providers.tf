@@ -23,27 +23,3 @@ provider "kubernetes" {
     command     = "aws"
   }
 }
-
-terraform {
-  required_providers {
-    utils = {
-      source = "cloudposse/utils"
-      version = "1.12.0"
-    }
-  }
-}
-
-provider "utils" {
-  # Configuration options
-}
-
-# terraform {
-#   required_version = ">= 0.13"
-
-#   required_providers {
-#     kubectl = {
-#       source  = "gavinbunney/kubectl"
-#       version = ">= 1.7.0"
-#     }
-#   }
-# }
