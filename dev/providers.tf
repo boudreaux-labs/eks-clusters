@@ -24,12 +24,13 @@ provider "kubernetes" {
   }
 }
 
+terraform {
+  required_version = ">= 0.13"
 
-#I may or may not need this, seems like the last error suggests I do. 
-required_providers {
-  kubectl = {
-    source  = "gavinbunney/kubectl"
-    version = ">= 1.7.0"
+  required_providers {
+    kubectl = {
+      source  = "gavinbunney/kubectl"
+      version = ">= 1.7.0"
+    }
   }
 }
-
