@@ -1,17 +1,17 @@
-#Goal here is to bootstrap argo any time the cluster gets destroyed and redeployed
+Goal here is to bootstrap argo any time the cluster gets destroyed and redeployed
 
-# resource "helm_release" "argocd" {
-#   name       = "argocd"
-#   repository = "https://argoproj.github.io/argo-helm"
-#   chart      = "argo-cd"
-#   version    = "5.46.2"
-#   timeout    = 1200
-#   values = [templatefile("${path.module}/argo_config/values.yaml",
-#     {
-#       argocd_repo_url = local.argocd.repo_url
-#       argocd_url      = local.argocd.argocd_url
-#   })]
-#   create_namespace = true
-#   namespace        = "argocd"
-#   description      = "The ArgoCD Helm Chart deployment configuration"
-# }
+resource "helm_release" "argocd" {
+  name       = "argocd"
+  repository = "https://argoproj.github.io/argo-helm"
+  chart      = "argo-cd"
+  version    = "5.46.2"
+  timeout    = 1200
+  values = [templatefile("${path.module}/argo_config/values.yaml",
+    {
+      argocd_repo_url = local.argocd.repo_url
+      argocd_url      = local.argocd.argocd_url
+  })]
+  create_namespace = true
+  namespace        = "argocd"
+  description      = "The ArgoCD Helm Chart deployment configuration"
+}
