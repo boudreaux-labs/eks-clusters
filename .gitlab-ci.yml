@@ -1,8 +1,7 @@
 #A pipeline thats a combination from stuff I saw at work and my own desire to have all my terraform build as an IAM role that Gitlab assumes (hence the token stuff)
 
 image:
-  #name: "registry.gitlab.com/gitlab-org/terraform-images/releases/1.5"
-  name: "zenika/terraform-aws-cli:release-7.0_terraform-1.3.9_awscli-2.12.5"
+  name: "zenika/terraform-aws-cli:release-7.0_terraform-1.3.9_awscli-2.12.5"   #name: "registry.gitlab.com/gitlab-org/terraform-images/releases/1.5"
 
 variables:
   TF_ROOT: ${ENVIRONMENT}  # The relative path to the root directory of the Terraform project
