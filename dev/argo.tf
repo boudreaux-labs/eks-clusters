@@ -1,4 +1,4 @@
-Goal here is to bootstrap argo any time the cluster gets destroyed and redeployed
+#Goal here is to bootstrap argo any time the cluster gets destroyed and redeployed
 
 resource "helm_release" "argocd" {
   name       = "argocd"
