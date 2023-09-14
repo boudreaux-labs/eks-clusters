@@ -1,7 +1,7 @@
 #A pipeline thats a combination from stuff I saw at work and my own desire to have all my terraform build as an IAM role that Gitlab assumes (hence the token stuff)
 
 image:
-  name: "zenika/terraform-aws-cli:release-7.0_terraform-1.3.9_awscli-2.12.5"   #name: "registry.gitlab.com/gitlab-org/terraform-images/releases/1.5"
+  name: "registry.gitlab.com/gitlab-org/terraform-images/releases/1.5"
 
 variables:
   TF_ROOT: ${ENVIRONMENT}  # The relative path to the root directory of the Terraform project
@@ -48,8 +48,8 @@ dev-validate:
   stage: validate
   script:
     - cd dev
-    - terraform init
-    - terraform validate
+    - gitlab-terraform init
+    - gitlab-terraform validate
   variables:
     ENVIRONMENT: dev    
 
@@ -58,9 +58,9 @@ dev-plan:
   stage: plan
   script:
     - cd dev
-    - terraform init
-    - terraform plan
-    - terraform plan-json
+    - gitlab-terraform init
+    - gitlab-terraform plan
+    - gitlab-terraform plan-json
   variables:
     ENVIRONMENT: dev  
   <<: *artifacts
@@ -71,8 +71,8 @@ dev-apply:
   stage: apply
   script:
     - cd dev
-    - terraform init
-    - terraform apply
+    - gitlab-terraform init
+    - gitlab-terraform apply
   when: manual
   variables:
     ENVIRONMENT: dev  
@@ -84,8 +84,8 @@ dev-destroy:
   stage: destroy
   script:
     - cd dev
-    - terraform init
-    - terraform destroy
+    - gitlab-terraform init
+    - gitlab-terraform destroy
   when: manual
   variables:
     ENVIRONMENT: dev  
