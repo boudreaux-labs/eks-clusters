@@ -48,8 +48,8 @@ dev-validate:
   stage: validate
   script:
     - cd dev
-    - gitlab-terraform init
-    - gitlab-terraform validate
+    - terraform init
+    - terraform validate
   variables:
     ENVIRONMENT: dev    
 
@@ -58,9 +58,9 @@ dev-plan:
   stage: plan
   script:
     - cd dev
-    - gitlab-terraform init
-    - gitlab-terraform plan
-    - gitlab-terraform plan-json
+    - terraform init
+    - terraform plan
+    - terraform plan-json
   variables:
     ENVIRONMENT: dev  
   <<: *artifacts
@@ -71,8 +71,8 @@ dev-apply:
   stage: apply
   script:
     - cd dev
-    - gitlab-terraform init
-    - gitlab-terraform apply
+    - terraform init
+    - terraform apply
   when: manual
   variables:
     ENVIRONMENT: dev  
@@ -84,8 +84,8 @@ dev-destroy:
   stage: destroy
   script:
     - cd dev
-    - gitlab-terraform init
-    - gitlab-terraform destroy
+    - terraform init
+    - terraform destroy
   when: manual
   variables:
     ENVIRONMENT: dev  
