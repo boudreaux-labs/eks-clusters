@@ -12,6 +12,6 @@ resource "helm_release" "argocd" {
       argocd_url      = local.argocd.argocd_url
   })]
   create_namespace = true
-  namespace        = argocd
+  namespace        = "argocd"
   description      = "The ArgoCD Helm Chart deployment configuration"
 }
