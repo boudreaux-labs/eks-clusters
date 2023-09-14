@@ -64,29 +64,6 @@ module "eks" {
   # ]
 
 
-#Apparently for the above Configmap stuff to work, Terraform needs to connect the the created cluster and use the cluster credentials to create the aws-auth configmap. Add this to the file that is creating the EKS cluster. 
-#https://stackoverflow.com/questions/69655605/configmaps-aws-auth-not-found
-
-# data "aws_eks_cluster" "default" {
-#   name = module.eks.cluster_id
-# }
-
-# data "aws_eks_cluster_auth" "default" {
-#   name = module.eks.cluster_id
-# }
-
-# provider "kubernetes" {
-#   host                   = module.eks.cluster_endpoint
-#   cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)
-#   exec {
-#     api_version = "client.authentication.k8s.io/v1beta1"
-#     args        = ["eks", "get-token", "--cluster-name", var.cluster_name]
-#     command     = "aws"
-#   }
-# }
-
-
-
   tags = {
     Environment = var.stack
     Terraform   = "true"
