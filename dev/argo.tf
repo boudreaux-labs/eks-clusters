@@ -2,7 +2,7 @@
 
 resource "helm_release" "argocd" {
   name       = "argocd"
-  repository = "https://github.com/argoproj/argo-helm/tree/main/charts/argo-cd"
+  repository = "https://github.com/argoproj/argo-helm/tree/main/charts/"
   chart      = "argo-cd"
   version    = "5.46.2"
   timeout    = 1200
