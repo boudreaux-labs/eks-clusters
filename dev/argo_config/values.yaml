@@ -1,11 +1,11 @@
 configs:
   repositories:
     addons:
-      url: ${argocd_repo_url}.git
+      url: https://gitlab.com/boudreaux-labs/app-deploy.git
       name: addons
       type: git
-      password: $4$?P@U}(Y5;us>moLqL ## read-only
-      username: argocd
+      #password: $4$?P@U}(Y5;us>moLqL ## read-only
+      #username: argocd
   rbac:
     policy.default: role:readonly
   params:
