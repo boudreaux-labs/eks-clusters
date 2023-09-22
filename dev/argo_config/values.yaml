@@ -4,7 +4,7 @@ server:
      namespace: argocd
      project: default
      source:
-       repoURL: https://gitlab.com/boudreaux-labs/app-deploy.git
+       repoURL: https://gitlab.com/boudreaux-labs/app-deploy
        targetRevision: HEAD
        path: addons
        directory:
