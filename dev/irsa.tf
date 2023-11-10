@@ -3,7 +3,7 @@
 
 ### VPN CNI
 
-module "vpc_cni_irsa" {
+module "irsa-vpc-cni" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
 
   role_name             = "vpc_cni"
@@ -25,7 +25,7 @@ module "vpc_cni_irsa" {
 
 ### EBS CSI
 
-module "ebs_csi_irsa" {
+module "irsa-ebs-csi" {
   source = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
 
   role_name             = "ebs-csi"
@@ -35,6 +35,27 @@ module "ebs_csi_irsa" {
     ex = {
       provider_arn               = module.eks.oidc_provider_arn
       namespace_service_accounts = ["kube-system:ebs-csi-controller-sa"]
+    }
+  }
+
+  tags = {
+    Environment = var.stack
+    Terraform   = "true"
+  }
+}
+
+## Load Balander Controller
+
+module "irsa-aws-load-balancer-controller" {
+  source = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+
+  role_name             = "aws-load-balancer-controller"
+  attach_ebs_csi_policy = true
+
+  oidc_providers = {
+    ex = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["kube-system:aws-load-balancer-controller"]
     }
   }
 
