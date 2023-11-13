@@ -1,6 +1,6 @@
 resource "aws_iam_instance_profile" "my_instance_profile" {
     name = "ec2jumpdefault"
-    role = "AWSSystemsManagerDefaultEC2InstanceManagementRole"
+    role = "awssystemsmanager-default-ec2-instance-management-role"
 }
 
 resource "aws_instance" "jump1" {
