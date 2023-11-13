@@ -2,8 +2,8 @@ data "aws_iam_role" "existing_iam_role" {
   name = "awssystemsmanagerdefaultec2instancemanagementrole"
 }
 
-resource "aws_iam_instance_profile" "my_instance_profile" {
-    name = "ec2jumpdefault"
+resource "aws_iam_instance_profile" "boudreuax-labs-ec2-default" {
+    name = "boudreuax-labs-ec2-default"
     role = data.aws_iam_role.existing_iam_role.name
 }
 
