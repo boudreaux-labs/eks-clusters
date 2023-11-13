@@ -1,6 +1,10 @@
+data "aws_iam_role" "existing_iam_role" {
+  name = "awssystemsmanagerdefaultec2instancemanagementrole"
+}
+
 resource "aws_iam_instance_profile" "my_instance_profile" {
     name = "ec2jumpdefault"
-    role = "awssystemsmanager-default-ec2-instance-management-role"
+    role = data.aws_iam_role.existing_iam_role.name
 }
 
 resource "aws_instance" "jump1" {
