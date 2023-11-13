@@ -13,7 +13,7 @@ resource "aws_instance" "jump1" {
   key_name      = "rdpkey"                  # Located in EC2, Network & Security, Key Pairs
   subnet_id = module.vpc.private_subnets[0]
   associate_public_ip_address = true
-  iam_instance_profile = aws_iam_instance_profile.my_instance_profile.name
+  iam_instance_profile = aws_iam_instance_profile.boudreuax-labs-ec2-default.name
 
   tags = {
     Name = "jump1"
