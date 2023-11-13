@@ -2,7 +2,7 @@ resource "aws_instance" "jump1" {
   ami           = "ami-005f8adf84f8c5057"   
   instance_type = "t3.small"
   key_name      = "rdpkey"                  # Located in EC2, Network & Security, Key Pairs
-  subnet_id = module.vpc.private_subnets
+  subnet_id = module.vpc.private_subnets[0]
   associate_public_ip_address = true
   iam_instance_profile = "arn:aws:iam::842851109414:role/service-role/AWSSystemsManagerDefaultEC2InstanceManagementRole"
 
