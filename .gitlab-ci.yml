@@ -20,8 +20,6 @@ default:
   - mkdir -p ~/.aws
   - echo "${MY_OIDC_TOKEN}" > /tmp/web_identity_token
   - echo -e "[profile oidc]\nrole_arn=${ROLE_ARN}\nweb_identity_token_file=/tmp/web_identity_token" > ~/.aws/config
-  - echo "CERT_ARN=${CERT_ARN}" > values.env #Grabbing the SSL cert and making it available for other files
-  - cat values.env
   - cat ~/.aws/config
   - apk add aws-cli
 

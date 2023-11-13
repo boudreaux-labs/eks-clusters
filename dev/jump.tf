@@ -7,6 +7,8 @@ resource "aws_iam_instance_profile" "boudreuax-labs-ec2-default" {
     role = data.aws_iam_role.existing_iam_role.name
 }
 
+
+
 resource "aws_instance" "jump1" {
   ami           = "ami-005f8adf84f8c5057"   
   instance_type = "t3.small"

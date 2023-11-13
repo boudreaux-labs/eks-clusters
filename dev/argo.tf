@@ -6,6 +6,7 @@ resource "helm_release" "argocd" {
   chart      = "argo-cd"
   version    = "5.46.2"
   timeout    = 1200
+  depends_on = [module.eks]
   values = [templatefile("${path.module}/argo_config/values.yaml",
     {
       argocd_repo_url = local.argocd.repo_url
@@ -15,3 +16,5 @@ resource "helm_release" "argocd" {
   namespace        = "argocd"
   description      = "The ArgoCD Helm Chart deployment configuration"
 }
+
+
