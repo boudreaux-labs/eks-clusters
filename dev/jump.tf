@@ -38,7 +38,7 @@ output "jump1_public_ip" {
 resource "aws_security_group" "boudreaux-labs-ec2-default-sg" {
   name        = "boudreaux-labs-ec2-default-sg"
   description = "Allow all outbound. Allow some inbound traffic"
-  vpc_id      = aws_vpc.main.id
+  vpc_id      = module.vpc.vpc_id
 
   ingress {
     description      = "RDP from VPC"
