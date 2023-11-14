@@ -1,11 +1,50 @@
-#IAM Profile and Roles for the instance
-data "aws_iam_role" "existing_iam_role" {
-  name = "awssystemsmanagerdefaultec2instancemanagementrole" 
+resource "aws_iam_instance_profile" "dev-resources-iam-profile" {
+  name = "ec2_profile"
+  role = aws_iam_role.dev-resources-iam-role.name
+}
+resource "aws_iam_role" "dev-resources-iam-role" {
+  name        = "dev-ssm-role"
+  description = "The role for the developer resources EC2"
+  assume_role_policy = <<EOF
+    {
+    "Version": "2012-10-17",
+    "Statement": {
+    "Effect": "Allow",
+    "Principal": {"Service": "ec2.amazonaws.com"},
+    "Action": "sts:AssumeRole"
+    }
+    }
+    EOF
 }
 
-resource "aws_iam_instance_profile" "boudreaux-labs-ec2-default" {
-    name = "boudreaux-labs-ec2-default"
-    role = data.aws_iam_role.existing_iam_role.name
+resource "aws_iam_role_policy_attachment" "dev-resources-ssm-policy" {
+role       = aws_iam_role.dev-resources-iam-role.name
+policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+}
+
+
+
+#The Instance
+resource "aws_instance" "jump1" {
+  ami           = "ami-005f8adf84f8c5057"   
+  instance_type = "t3.small"
+  key_name      = "rdpkey"                  # Located in EC2, Network & Security, Key Pairs
+  subnet_id = module.vpc.private_subnets[0]
+  associate_public_ip_address = true
+  iam_instance_profile = aws_iam_instance_profile.dev-resources-iam-profile.name
+  vpc_security_group_ids = [aws_security_group.boudreaux-labs-ec2-default-sg.id]
+
+  tags = {
+    Name = "jump1"
+  }
+
+  # Additional configuration for Windows instances
+  user_data = <<-EOF
+              <powershell>
+                # PowerShell script for Windows instance setup goes here
+                # For example, you can configure Windows features, install software, etc.
+              </powershell>
+              EOF
 }
 
 #Security group for the instance
@@ -33,29 +72,6 @@ resource "aws_security_group" "boudreaux-labs-ec2-default-sg" {
   tags = {
     Name = "boudreaux-labs-ec2-default-sg"
   }
-}
-
-#The Instance
-resource "aws_instance" "jump1" {
-  ami           = "ami-005f8adf84f8c5057"   
-  instance_type = "t3.small"
-  key_name      = "rdpkey"                  # Located in EC2, Network & Security, Key Pairs
-  subnet_id = module.vpc.private_subnets[0]
-  associate_public_ip_address = true
-  iam_instance_profile = aws_iam_instance_profile.boudreaux-labs-ec2-default.name
-  vpc_security_group_ids = [aws_security_group.boudreaux-labs-ec2-default-sg.id]
-
-  tags = {
-    Name = "jump1"
-  }
-
-  # Additional configuration for Windows instances
-  user_data = <<-EOF
-              <powershell>
-                # PowerShell script for Windows instance setup goes here
-                # For example, you can configure Windows features, install software, etc.
-              </powershell>
-              EOF
 }
 
 # Output the public IP address of the instance for convenience
