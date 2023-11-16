@@ -1,3 +1,8 @@
+variable "my_ip" {
+  default = "63.236.68.4"
+  description = "My IP"
+}
+
 variable "region" {
   default     = "us-east-1"
   description = "AWS region"
