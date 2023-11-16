@@ -25,33 +25,32 @@
 #   }
 # }
 
-#Network ACL
-resource "aws_network_acl" "main" {
-  vpc_id = module.vpc.vpc_id
+# #Network ACL
+# resource "aws_network_acl" "main" {
+#   vpc_id = module.vpc.vpc_id
 
-  egress {
-    protocol   = "tcp"
-    rule_no    = 200
-    action     = "allow"
-    cidr_block = "0.0.0.0/0"
-    from_port  = 0
-    to_port    = 0
-  }
+#   egress {
+#     protocol   = "tcp"
+#     rule_no    = 200
+#     action     = "allow"
+#     cidr_block = "0.0.0.0/0"
+#     from_port  = 0
+#     to_port    = 0
+#   }
 
-  ingress {
-    protocol   = "tcp"
-    rule_no    = 100
-    action     = "allow"
-    cidr_block = "${var.my_ip}"
-    from_port  = 443
-    to_port    = 443
-  }
+#   ingress {
+#     protocol   = "tcp"
+#     rule_no    = 100
+#     action     = "allow"
+#     cidr_block = "${var.my_ip}"
+#     from_port  = 443
+#     to_port    = 443
+#   }
 
-  tags = {
-    Name = "main"
-  }
-}
-
+#   tags = {
+#     Name = "main"
+#   }
+# }
 
 
 #VPC
@@ -82,29 +81,25 @@ module "vpc" {
   }
 }
 
-# resource "aws_security_group" "vpc_default_sg" {
-#   vpc_id      = module.vpc.vpc_id  
+resource "aws_security_group" "restricted_internet_facing_albs" {
+  vpc_id      = module.vpc.vpc_id  
 
-#   name        = "vpc_default_sg"
-#   description = "vpc_default_sg"
+  name        = "stricted_internet_facing_albs"
+  description = "stricted_internet_facing_albs"
 
-#   ingress {
-#     from_port   = 443
-#     to_port     = 443
-#     protocol    = "tcp"
-#     cidr_blocks = ["${var.my_ip}"]
-#   }
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["${var.my_ip}"]
+  }
 
-#   egress {
-#     from_port   = 0
-#     to_port     = 0
-#     protocol    = "-1"
-#     cidr_blocks = ["0.0.0.0/0"]
-#   }
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 
-#   tags = {
-#     Name = "vpc_default_sg"
-#     // Add more tags as needed
-#   }
-# }
+}
 
