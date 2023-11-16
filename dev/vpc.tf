@@ -25,29 +25,52 @@ module "vpc" {
   }
 }
 
-resource "aws_security_group" "vpc_default_sg" {
-  vpc_id      = module.vpc.vpc_id  
+# resource "aws_security_group" "vpc_default_sg" {
+#   vpc_id      = module.vpc.vpc_id  
 
-  name        = "vpc_default_sg"
-  description = "vpc_default_sg"
+#   name        = "vpc_default_sg"
+#   description = "vpc_default_sg"
 
-  ingress {
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = ["${var.my_ip}"]
-  }
+#   ingress {
+#     from_port   = 443
+#     to_port     = 443
+#     protocol    = "tcp"
+#     cidr_blocks = ["${var.my_ip}"]
+#   }
+
+#   egress {
+#     from_port   = 0
+#     to_port     = 0
+#     protocol    = "-1"
+#     cidr_blocks = ["0.0.0.0/0"]
+#   }
+
+#   tags = {
+#     Name = "vpc_default_sg"
+#     // Add more tags as needed
+#   }
+# }
+
+resource "aws_network_acl" "main" {
+  vpc_id = aws_vpc.main.id
 
   egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
+    protocol   = "tcp"
+    rule_no    = 200
+    action     = "allow"
+    cidr_block = "0.0.0.0/0"
+  }
+
+  ingress {
+    protocol   = "tcp"
+    rule_no    = 100
+    action     = "allow"
+    cidr_block = "${var.my_ip}"
+    from_port  = 443
+    to_port    = 443
   }
 
   tags = {
-    Name = "vpc_default_sg"
-    // Add more tags as needed
+    Name = "main"
   }
 }
-
