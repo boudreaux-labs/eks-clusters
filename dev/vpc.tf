@@ -81,11 +81,11 @@ module "vpc" {
   }
 }
 
-resource "aws_security_group" "restricted_internet_facing_albs" {
+resource "aws_security_group" "alb_whitelisting" {
   vpc_id      = module.vpc.vpc_id  
 
-  name        = "stricted_internet_facing_albs"
-  description = "stricted_internet_facing_albs"
+  name        = "alb_whitelisting"
+  description = "alb_whitelisting"
 
   ingress {
     from_port   = 443
