@@ -51,8 +51,9 @@ module "vpc" {
 #   }
 # }
 
+#Network ACL
 resource "aws_network_acl" "main" {
-  vpc_id = aws_vpc.main.id
+  vpc_id = module.vpc.vpc_id
 
   egress {
     protocol   = "tcp"
