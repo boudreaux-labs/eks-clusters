@@ -1,4 +1,4 @@
-output "restricted_internet_facing_albs" {
+output "alb_whitelisting_sg" {
   value = aws_security_group.alb_whitelisting.id
 }
 
