@@ -22,3 +22,7 @@ variable "cidr_block"{
   default = "10.0.0.0/16"
 }
 
+variable "alb_whitelisting_sg_output" {
+  default = aws_security_group.alb_whitelisting.id
+}
+

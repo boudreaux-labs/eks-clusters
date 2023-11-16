@@ -7,6 +7,7 @@ locals {
     project            = "default"
     repo_url           = "https://gitlab.com/boudreaux-labs/app-deploy"
     argocd_url         = "argocd-${var.stack}.boudreauxlabs.com"
+
   }
   
 }

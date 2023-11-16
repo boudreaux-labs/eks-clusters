@@ -79,27 +79,44 @@ module "vpc" {
     Environment = "${var.stack}"
     "kubernetes.io/role/elb" = 1
   }
+
+
+
 }
 
-resource "aws_security_group" "alb_whitelisting" {
-  vpc_id      = module.vpc.vpc_id  
+#Security Group for ALB Whitelisting
+module "alb_whitelisting_sg" {
+  source = "terraform-aws-modules/security-group/aws"
 
-  name        = "alb_whitelisting"
-  description = "alb_whitelisting"
+  # Replace these with appropriate values
+  description = "alb_whitelisting_sg"
+  vpc_id      = module.vpc.vpc_id
 
-  ingress {
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = ["${var.my_ip}"]
-  }
+  ingress_rules = [
+    {
+      from_port   = 443
+      to_port     = 443
+      protocol    = "tcp"
+      description = "Allow inbound traffic on port 443"
+      cidr_blocks = ["${var.my_ip}"]
+    },
+    {
+      from_port   = 443
+      to_port     = 443
+      protocol    = "tcp"
+      description = "Allow inbound traffic on port 443"
+      cidr_blocks = ["0.0.0.0/0"]
+    },
+  ]
 
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
+  egress_cidr_blocks = ["0.0.0.0/0"]
+  egress_rules = [
+    {
+      from_port   = 0
+      to_port     = 0
+      protocol    = "-1"
+      description = "Allow all outbound traffic"
+    }
+  ]
 }
 
