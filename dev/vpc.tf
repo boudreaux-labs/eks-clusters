@@ -1,10 +1,37 @@
-#Default Network ACL
-resource "aws_default_network_acl" "default" {
-  default_network_acl_id = module.vpc.default_network_acl_id
+# #Default Network ACL
+# resource "aws_default_network_acl" "default" {
+#   default_network_acl_id = module.vpc.default_network_acl_id
+
+#   egress {
+#     protocol   = "tcp"
+#     rule_no    = 100
+#     action     = "allow"
+#     cidr_block = "0.0.0.0/0"
+#     from_port  = 0
+#     to_port    = 0
+#   }
+
+#   ingress {
+#     protocol   = "tcp"
+#     rule_no    = 100
+#     action     = "allow"
+#     cidr_block = "${var.my_ip}"
+#     from_port  = 443
+#     to_port    = 443
+#   }
+
+#   tags = {
+#     Name = "main"
+#   }
+# }
+
+#Network ACL
+resource "aws_network_acl" "main" {
+  vpc_id = module.vpc.vpc_id
 
   egress {
     protocol   = "tcp"
-    rule_no    = 100
+    rule_no    = 200
     action     = "allow"
     cidr_block = "0.0.0.0/0"
     from_port  = 0
@@ -20,19 +47,11 @@ resource "aws_default_network_acl" "default" {
     to_port    = 443
   }
 
-  ingress {
-    protocol   = -1
-    rule_no    = 101
-    action     = "deny"
-    cidr_block = "0.0.0.0/0"
-    from_port  = 0
-    to_port    = 0
-  }
-
   tags = {
     Name = "main"
   }
 }
+
 
 
 #VPC
