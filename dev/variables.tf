@@ -1,5 +1,5 @@
 variable "my_ip" {
-  default = "63.236.68.4"
+  default = "136.226.55.2"
   description = "My IP"
 }
 
