@@ -115,7 +115,7 @@ module "alb_whitelisting_sg" {
       to_port     = 0
       protocol    = "-1"
       description = "Allow all outbound traffic"
-      cidr_blocks = ["0.0.0.0/0"]
+      cidr_blocks = "0.0.0.0/0"
     }
   ]
 }
