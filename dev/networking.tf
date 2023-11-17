@@ -92,7 +92,7 @@ module "alb_whitelisting_sg" {
   description = "alb_whitelisting_sg"
   vpc_id      = module.vpc.vpc_id
 
-  ingress_rules = [
+  ingress_with_cidr_blocks = [
     {
       from_port   = 443
       to_port     = 443
@@ -105,17 +105,17 @@ module "alb_whitelisting_sg" {
       to_port     = 443
       protocol    = "tcp"
       description = "Allow inbound traffic on port 443"
-      cidr_blocks = "0.0.0.0/0"
-    },
+      cidr_blocks = ["0.0.0.0/0"]
+    }
   ]
 
-  egress_rules = [
+  egress_with_cidr_blocks = [
     {
       from_port   = 0
       to_port     = 0
       protocol    = "-1"
       description = "Allow all outbound traffic"
-      cidr_blocks = "0.0.0.0/0"
+      cidr_blocks = ["0.0.0.0/0"]
     }
   ]
 }
