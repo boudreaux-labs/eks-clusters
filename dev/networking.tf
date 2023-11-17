@@ -98,8 +98,7 @@ module "alb_whitelisting_sg" {
       to_port     = 443
       protocol    = "tcp"
       description = "Allow inbound traffic on port 443"
-      cidr_blocks = ["${var.my_ip}"]
-    },
+      cidr_blocks = "${var.my_ip}"},
     {
       from_port   = 443
       to_port     = 443
@@ -109,13 +108,13 @@ module "alb_whitelisting_sg" {
     },
   ]
 
-  egress_cidr_blocks = ["0.0.0.0/0"]
   egress_rules = [
     {
       from_port   = 0
       to_port     = 0
       protocol    = "-1"
       description = "Allow all outbound traffic"
+      cidr_blocks = ["0.0.0.0/0"]
     }
   ]
 }
