@@ -98,14 +98,14 @@ module "alb_whitelisting_sg" {
       to_port     = 443
       protocol    = "tcp"
       description = "Allow inbound traffic on port 443"
-      cidr_blocks = "${var.my_ip}"
+      cidr_blocks = var.my_ip
       },
     {
       from_port   = 443
       to_port     = 443
       protocol    = "tcp"
       description = "Allow inbound traffic on port 443"
-      cidr_blocks = ["0.0.0.0/0"]
+      cidr_blocks = "0.0.0.0/0"
     }
   ]
 
