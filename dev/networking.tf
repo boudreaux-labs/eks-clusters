@@ -87,6 +87,7 @@ module "vpc" {
 #Security Group for ALB Whitelisting
 module "alb_whitelisting_sg" {
   source = "terraform-aws-modules/security-group/aws"
+  name        = "alb_whitelisting_sg"
 
   # Replace these with appropriate values
   description = "alb_whitelisting_sg"
