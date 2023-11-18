@@ -53,7 +53,6 @@ resource "kubernetes_secret" "argocd_kenny_secret" {
     name      = "argocd.kenny.secret"  # Update the name if needed
     namespace = "argocd"
   }
-
   data = {
     "accounts.kenny.password" = base64encode(var.argocd_admin_pwd)
   }
