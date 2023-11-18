@@ -7,7 +7,7 @@ resource "helm_release" "argocd" {
   version    = "5.46.2"
   timeout    = 1200
   depends_on = [module.eks, module.eks-load-balancer-controller, module.vpc]
-  values = [templatefile("${path.module}/argocd_config/values.yaml",
+  values = [templatefile("${path.module}/argo_config/values.yaml",
     {
       argocd_repo_url = local.argocd.repo_url
       argocd_url      = local.argocd.argocd_url
