@@ -20,20 +20,9 @@ resource "helm_release" "argocd" {
 }
 
 
-#ArgoCD user management. ChatGPT helped with this one (a little, poorly)
+#ArgoCD local  user management. Done by editing the existing "argocd_cm" config map
 
-# resource "kubectl_secret" "argocd_initial_admin_secret" {
-#   metadata {
-#     name      = "argocd-initial-admin-secret"
-#     namespace = "argocd"
-#   }
-
-#   data = {
-#     "admin.password" = base64encode(var.argocd_admin_pwd)
-#   }
-# }
-
-resource "kubernetes_config_map_v1_data" "argocd_cm" {
+resource "kubernetes_config_map_v1_data" "argocd_cm" {  #sourced: https://stackoverflow.com/questions/72903973/how-do-i-add-users-to-argo-cd-using-terraform-resource
   metadata {
     name      = "argocd-cm"
     namespace = "argocd"
@@ -41,6 +30,7 @@ resource "kubernetes_config_map_v1_data" "argocd_cm" {
   data = {
     "accounts.kenny"                 = "apiKey, login"
     "accounts.kenny.enabled"         = "true"
+    "accounts.kenny.password"        = "${data.kubernetes_secret.argocd_kenny_secret.data.accounts.kenny.password}"
   }
 }
 
@@ -50,6 +40,6 @@ resource "kubernetes_secret" "argocd_kenny_secret" {
     namespace = "argocd"
   }
   data = {
-    "accounts.kenny.password" = base64encode(var.argocd_admin_pwd)
+    "accounts.kenny.password" = base64encode(var.argocd_admin_pwd) 
   }
 }
