@@ -16,4 +16,5 @@ server:
     - argocd-dev.boudreauxlabs.com
   service:
     type: NodePort
-    
+    loadBalancerSourceRanges: 
+    - 63.236.68.4
