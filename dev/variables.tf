@@ -23,3 +23,6 @@ variable "cidr_block"{
 variable "cert_arn" {
   default = "$CERT_ARN"
 }
+variable "argo_admin_pwd" {
+  default = "$ARGO_ADMIN_PWD"
+}
