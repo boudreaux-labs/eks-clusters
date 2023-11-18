@@ -24,5 +24,5 @@ variable "cert_arn" {
   default = "$CERT_ARN"
 }
 variable "argocd_admin_pwd" {
-  default = "$ARGO_ADMIN_PWD"
+  default = "password1"
 }
