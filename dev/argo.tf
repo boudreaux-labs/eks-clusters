@@ -30,16 +30,16 @@ resource "kubernetes_config_map_v1_data" "argocd_cm" {  #sourced: https://stacko
   data = {
     "accounts.kenny"                 = "apiKey, login"
     "accounts.kenny.enabled"         = "true"
-    "accounts.kenny.password"        = "${data.kubernetes_secret.argocd_kenny_secret.data.accounts.kenny.password}"
+    "accounts.kenny.password"        = var.argocd_admin_pwd
   }
 }
 
-resource "kubernetes_secret" "argocd_kenny_secret" {
-  metadata {
-    name      = "argocd.kenny.secret"  # Update the name if needed
-    namespace = "argocd"
-  }
-  data = {
-    "accounts.kenny.password" = base64encode(var.argocd_admin_pwd) 
-  }
-}
+# resource "kubernetes_secret" "argocd_kenny_secret" {
+#   metadata {
+#     name      = "argocd.kenny.secret"  # Update the name if needed
+#     namespace = "argocd"
+#   }
+#   data = {
+#     "accounts.kenny.password" = base64encode(var.argocd_admin_pwd) 
+#   }
+# }
