@@ -20,11 +20,12 @@ resource "helm_release" "argocd" {
 }
 
 
-#ArgoCD user management. ChatGPT helped with this one
+#ArgoCD user management. ChatGPT helped with this one (a little, poorly)
 
-resource "kubectl_secret" "argocd_admin_password" {
+resource "kubernetes_config_map_v1_data" "argocd-configmap" {
+  force = true
   metadata {
-    name      = "argocd-secret"
+    name      = "argocd-configmap"
     namespace = "argocd"
   }
 
