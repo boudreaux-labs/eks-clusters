@@ -50,7 +50,7 @@ resource "kubernetes_config_map" "argocd_cm" {
 
 resource "kubernetes_secret" "argocd_kenny_secret" {
   metadata {
-    name      = "argocd_kenny_secret"  # Update the name if needed
+    name      = "argocd.kenny.secret"  # Update the name if needed
     namespace = "argocd"
   }
 
