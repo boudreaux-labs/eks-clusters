@@ -1,6 +1,5 @@
 #https://github.com/terraform-aws-modules/terraform-aws-eks/blob/master/docs/irsa_integration.md
 
-
 ### VPN CNI
 
 module "irsa-vpc-cni" {

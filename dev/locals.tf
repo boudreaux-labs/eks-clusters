@@ -9,5 +9,4 @@ locals {
     argocd_url         = "argocd-${var.stack}.boudreauxlabs.com"
 
   }
-  
 }

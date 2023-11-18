@@ -1,8 +1,7 @@
 variable "my_ip" {
-  default = "136.226.55.35/32"
+  default = "136.226.55.2/32"
   description = "My IP"
 }
-
 variable "region" {
   default     = "us-east-1"
   description = "AWS region"
@@ -20,4 +19,7 @@ variable "cluster_name" {
 }
 variable "cidr_block"{
   default = "10.0.0.0/16"
+}
+variable "cert_arn" {
+  default = "$CERT_ARN"
 }

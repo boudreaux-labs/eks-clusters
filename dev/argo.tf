@@ -11,6 +11,8 @@ resource "helm_release" "argocd" {
     {
       argocd_repo_url = local.argocd.repo_url
       argocd_url      = local.argocd.argocd_url
+      my_ip           = var.my_ip
+      cert_url        = var.cert_arn
   })]
   create_namespace = true
   namespace        = "argocd"
