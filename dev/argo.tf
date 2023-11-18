@@ -11,7 +11,7 @@ resource "helm_release" "argocd" {
     {
       argocd_repo_url = local.argocd.repo_url
       argocd_url      = local.argocd.argocd_url
-      alb_whitelisting_sg = module.alb_whitelisting_sg.security_group_name
+      #alb_whitelisting_sg = module.alb_whitelisting_sg.security_group_name
   })]
   create_namespace = true
   namespace        = "argocd"

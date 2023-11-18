@@ -1,58 +1,3 @@
-# #Default Network ACL
-# resource "aws_default_network_acl" "default" {
-#   default_network_acl_id = module.vpc.default_network_acl_id
-
-#   egress {
-#     protocol   = "tcp"
-#     rule_no    = 100
-#     action     = "allow"
-#     cidr_block = "0.0.0.0/0"
-#     from_port  = 0
-#     to_port    = 0
-#   }
-
-#   ingress {
-#     protocol   = "tcp"
-#     rule_no    = 100
-#     action     = "allow"
-#     cidr_block = "${var.my_ip}"
-#     from_port  = 443
-#     to_port    = 443
-#   }
-
-#   tags = {
-#     Name = "main"
-#   }
-# }
-
-# #Network ACL
-# resource "aws_network_acl" "main" {
-#   vpc_id = module.vpc.vpc_id
-
-#   egress {
-#     protocol   = "tcp"
-#     rule_no    = 200
-#     action     = "allow"
-#     cidr_block = "0.0.0.0/0"
-#     from_port  = 0
-#     to_port    = 0
-#   }
-
-#   ingress {
-#     protocol   = "tcp"
-#     rule_no    = 100
-#     action     = "allow"
-#     cidr_block = "${var.my_ip}"
-#     from_port  = 443
-#     to_port    = 443
-#   }
-
-#   tags = {
-#     Name = "main"
-#   }
-# }
-
-
 #VPC
 module "vpc" {
   source = "terraform-aws-modules/vpc/aws"
@@ -84,41 +29,41 @@ module "vpc" {
 
 }
 
-#Security Group for ALB Whitelisting
-module "alb_whitelisting_sg" {
-  source = "terraform-aws-modules/security-group/aws"
-  name        = "alb_whitelisting_sg"
+# #Security Group for ALB Whitelisting
+# module "alb_whitelisting_sg" {
+#   source = "terraform-aws-modules/security-group/aws"
+#   name        = "alb_whitelisting_sg"
 
-  # Replace these with appropriate values
-  description = "alb_whitelisting_sg"
-  vpc_id      = module.vpc.vpc_id
+#   # Replace these with appropriate values
+#   description = "alb_whitelisting_sg"
+#   vpc_id      = module.vpc.vpc_id
 
-  ingress_with_cidr_blocks = [
-    {
-      from_port   = 443
-      to_port     = 443
-      protocol    = "tcp"
-      description = "Allow inbound traffic on port 443"
-      cidr_blocks = "${var.my_ip}"
-      }
-    #   ,
-    # {
-    #   from_port   = 443
-    #   to_port     = 443
-    #   protocol    = "tcp"
-    #   description = "Allow inbound traffic on port 443"
-    #   cidr_blocks = "0.0.0.0/0"
-    #}
-  ]
+#   ingress_with_cidr_blocks = [
+#     {
+#       from_port   = 443
+#       to_port     = 443
+#       protocol    = "tcp"
+#       description = "Allow inbound traffic on port 443"
+#       cidr_blocks = "${var.my_ip}"
+#       }
+#     #   ,
+#     # {
+#     #   from_port   = 443
+#     #   to_port     = 443
+#     #   protocol    = "tcp"
+#     #   description = "Allow inbound traffic on port 443"
+#     #   cidr_blocks = "0.0.0.0/0"
+#     #}
+#   ]
 
-  egress_with_cidr_blocks = [
-    {
-      from_port   = 0
-      to_port     = 0
-      protocol    = "-1"
-      description = "Allow all outbound traffic"
-      cidr_blocks = "0.0.0.0/0"
-    }
-  ]
-}
+#   egress_with_cidr_blocks = [
+#     {
+#       from_port   = 0
+#       to_port     = 0
+#       protocol    = "-1"
+#       description = "Allow all outbound traffic"
+#       cidr_blocks = "0.0.0.0/0"
+#     }
+#   ]
+# }
 
