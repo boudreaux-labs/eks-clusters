@@ -8,8 +8,9 @@ server:
       alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
       alb.ingress.kubernetes.io/actions.ssl-redirect: '{"Type": "redirect", "RedirectConfig": { "Protocol": "HTTPS", "Port": "443", "StatusCode": "HTTP_301"}}'
       alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:842851109414:certificate/d0347ead-df5b-4d02-8f71-9dbf38284f2c
+      alb.ingress.kubernetes.io/inbound-cidrs: ["63.236.68.4/32"]
       external-dns.alpha.kubernetes.io/hostname: argocd-dev.boudreauxlabs.com
-      service.beta.kubernetes.io/load-balancer-source-ranges: ["63.236.68.4/32"]
+      
   paths:
     - /* 
   tls:
@@ -17,5 +18,3 @@ server:
     - argocd-dev.boudreauxlabs.com
   service:
     type: NodePort
-    #loadBalancerSourceRanges: 
-    #- 63.236.68.4
