@@ -33,14 +33,10 @@ resource "helm_release" "argocd" {
 #   }
 # }
 
-resource "kubernetes_config_map_v1" "argocd_cm" {
+resource "kubernetes_config_map_v1_data" "argocd_cm" {
   metadata {
     name      = "argocd-cm"
     namespace = "argocd"
-    labels = {
-      "app.kubernetes.io/name"     = "argocd-cm"
-      "app.kubernetes.io/part-of" = "argocd"
-    }
   }
   data = {
     "accounts.kenny"                 = "apiKey, login"
