@@ -33,7 +33,7 @@ resource "helm_release" "argocd" {
 #   }
 # }
 
-resource "kubectl_config_map" "argocd_cm" {
+resource "kubernetes_config_map" "argocd_cm" {
   metadata {
     name      = "argocd-cm"
     namespace = "argocd"
@@ -48,7 +48,7 @@ resource "kubectl_config_map" "argocd_cm" {
   }
 }
 
-resource "kubectl_secret" "argocd_kenny_secret" {
+resource "kubernetes_secret" "argocd_kenny_secret" {
   metadata {
     name      = "argocd_kenny_secret"  # Update the name if needed
     namespace = "argocd"
