@@ -46,6 +46,6 @@ resource "kubernetes_config_map_v1_data" "argocd_cm" {  #sourced: https://stacko
   data = {
     "accounts.kenny"                 = "apiKey, login"
     "accounts.kenny.enabled"         = "true"
-    "accounts.kenny.password"        = "${data.kubernetes_secret.argocd_kenny_secret.data.password}"
+    "accounts.kenny.password"        = "${data.kubernetes_secret.argocd_kenny_secret.data.accounts.kenny.password}"
   }
 }
