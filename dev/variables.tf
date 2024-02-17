@@ -1,5 +1,5 @@
 variable "my_ip" {
-  default = "50.125.83.114/32"
+  default = "136.226.57.5/32"
   description = "My IP"
 }
 variable "region" {
@@ -22,7 +22,4 @@ variable "cidr_block"{
 }
 variable "cert_arn" {
   default = "$CERT_ARN"
-}
-variable "argocd_kenny_pwd" {
-  default = "password1"
 }
