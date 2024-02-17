@@ -17,4 +17,5 @@ resource "helm_release" "external-dns" {
   repository = "https://kubernetes-sigs.github.io/external-dns/"
   chart      = "external-dns"
   version    = "1.14.3"
+  timeout    = 1200
 }
