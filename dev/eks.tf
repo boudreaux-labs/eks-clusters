@@ -3,12 +3,9 @@
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "19.16.0"
-
   cluster_name    = var.cluster_name
   cluster_version = var.cluster_version
-
   cluster_endpoint_public_access = true
-
   cluster_addons = {
     coredns = {
       most_recent = true
@@ -43,7 +40,6 @@ module "eks" {
       min_size     = 1
       max_size     = 2
       desired_size = 1
-
       instance_types = ["t3.large"]
       capacity_type  = "SPOT"
     }
