@@ -26,5 +26,4 @@ resource "helm_release" "external-dns" {
   repository = "https://github.com/kubernetes-sigs/external-dns/tree/master/charts/external-dns"
   chart      = "external-dns"
   version    = "1.14.3"
-  values = {}
 }
