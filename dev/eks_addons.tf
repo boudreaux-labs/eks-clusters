@@ -12,10 +12,9 @@ module "eks-load-balancer-controller" {
   irsa_policy_enabled              = true
 }
 
-
 resource "helm_release" "external-dns" {
   name       = "external-dns"
-  repository = "https://github.com/kubernetes-sigs/external-dns"
+  repository = "https://kubernetes-sigs.github.io/external-dns/"
   chart      = "external-dns"
   version    = "1.14.3"
 }
