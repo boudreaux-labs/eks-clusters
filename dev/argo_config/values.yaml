@@ -19,6 +19,8 @@ server:
   service:
     type: NodePort
 
+  argocdServerAdminPassword: $2a$10$RuiEveeG8FEcwpl47mhoDeNO.l15JBBgrVYQ3n9Vmh5583wjNVVtW
+
 
   # # -- ArgoCD rbac config ([ArgoCD RBAC policy])
   # ## Ref: https://github.com/argoproj/argo-cd/blob/master/docs/operator-manual/rbac.md
