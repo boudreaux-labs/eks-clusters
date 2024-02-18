@@ -17,4 +17,5 @@ module "eks-external-dns" {
   cluster_identity_oidc_issuer_arn = module.eks.oidc_provider_arn
   enabled = true
   irsa_role_create = true
+  policy = "sync"
 }
