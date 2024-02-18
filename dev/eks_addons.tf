@@ -18,6 +18,6 @@ module "eks-external-dns" {
   enabled = true
   irsa_role_create = true
   additional_args = [
-    policy = "sync"
+    "policy:sync"
   ]
 }
