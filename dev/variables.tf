@@ -21,5 +21,5 @@ variable "cidr_block"{
   default = "10.0.0.0/16"
 }
 variable "cert_arn" {
-  default = "arn:aws:acm:us-east-1:842851109414:certificate/43b48532-6b09-4576-ae2e-11b72291a4f4"
+  default = "arn:aws:acm:us-east-1:842851109414:certificate/c7cadf29-ae16-4a0d-8c37-f89929ab4f8e"
 }
