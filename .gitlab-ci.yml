@@ -22,7 +22,6 @@ default:
   - echo -e "[profile oidc]\nrole_arn=${ROLE_ARN}\nweb_identity_token_file=/tmp/web_identity_token" > ~/.aws/config
   - cat ~/.aws/config
   - apk add aws-cli
-  - ARGO_PASSWORD=$(aws secretsmanager get-secret-value --secret-id ArgoAdminPassword --query SecretString --output text | jq -r '.ArgoAdminPassword')
 
 stages:
   - validate
@@ -72,6 +71,8 @@ dev-apply:
   stage: apply
   script:
     - cd dev
+    # Fetch the ArgoCD admin password from AWS Secrets Manager
+    - ARGO_PASSWORD=$(aws secretsmanager get-secret-value --secret-id ArgoAdminPassword --query SecretString --output text | jq -r '.ArgoAdminPassword')
     - gitlab-terraform init
     - gitlab-terraform apply -var="argocd_admin_password=$ARGO_PASSWORD" -auto-approve
   when: manual
