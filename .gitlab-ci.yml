@@ -41,7 +41,7 @@ default:
 
   # Retrieve the ArgoCD admin password from AWS Secrets Manager
   #- echo "MY_OIDC_TOKEN length is ${#MY_OIDC_TOKEN}"
-  - Echo reading token...
+  - echo reading token...
   - cat $MY_OIDC_TOKEN
   - cat /tmp/web_identity_token
   - echo "Retrieving ARGO_PASSWORD..."
