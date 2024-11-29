@@ -22,7 +22,7 @@ default:
   - echo -e "[profile oidc]\nrole_arn=${ROLE_ARN}\nweb_identity_token_file=/tmp/web_identity_token" > ~/.aws/config
   - cat ~/.aws/config
   - apk add aws-cli
-  - ARGO_PASSWORD=$(aws secretsmanager get-secret-value --secret-id ArgoAdminPassword --query SecretString --output text | jq -r '.ArgoAdminPassword')
+  - ARGO_PASSWORD=$(aws --profile oidc secretsmanager get-secret-value --secret-id ArgoAdminPassword --query SecretString --output text | jq -r '.ArgoAdminPassword')
   - export ARGO_PASSWORD
 
 stages:
