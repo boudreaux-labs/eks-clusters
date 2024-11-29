@@ -18,3 +18,6 @@ server:
     - argocd-dev.boudreauxlabs.com
   service:
     type: NodePort
+  admin:
+    enabled: true
+    password: "${argocd_admin_password}"

@@ -9,10 +9,11 @@ resource "helm_release" "argocd" {
   depends_on = [module.eks, module.eks-load-balancer-controller, module.vpc]
   values = [templatefile("${path.module}/argo_config/values.yaml",
     {
-      argocd_repo_url = "https://gitlab.com/boudreaux-labs/app-deploy"
-      argocd_url      = "argocd-${var.stack}.boudreauxlabs.com"
-      my_ip           = var.my_ip
-      cert_arn        = var.cert_arn
+      argocd_repo_url       = "https://gitlab.com/boudreaux-labs/app-deploy"
+      argocd_url            = "argocd-${var.stack}.boudreauxlabs.com"
+      my_ip                 = var.my_ip
+      cert_arn              = var.cert_arn
+      argocd_admin_password = var.argocd_admin_password
   })]
   create_namespace = true
   namespace        = "argocd"
