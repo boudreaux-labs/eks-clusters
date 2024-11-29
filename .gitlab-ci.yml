@@ -33,10 +33,6 @@ default:
   # Install necessary tools
   - apk add --no-cache aws-cli jq
 
-  # Validate OIDC token and role ARN
-  - if [ -z "${MY_OIDC_TOKEN}" ]; then echo "Error: MY_OIDC_TOKEN is empty"; exit 1; fi
-  - if [ -z "${ROLE_ARN}" ]; then echo "Error: ROLE_ARN is empty"; exit 1; fi
-
   # Configure AWS profile for OIDC role assumption
   - echo "${MY_OIDC_TOKEN}" > /tmp/web_identity_token
   - echo -e "[profile oidc]\nrole_arn=${ROLE_ARN}\nweb_identity_token_file=/tmp/web_identity_token" > ~/.aws/config
@@ -46,7 +42,6 @@ default:
   # Retrieve the ArgoCD admin password from AWS Secrets Manager
   - echo "Retrieving ARGO_PASSWORD..."
   - ARGO_PASSWORD=$(aws secretsmanager get-secret-value --secret-id ArgoAdminPassword --query SecretString --output text | jq -r '.ArgoAdminPassword')
-  - if [ -z "${ARGO_PASSWORD}" ]; then echo "Error: Failed to retrieve ARGO_PASSWORD"; exit 1; fi
   - echo "ARGO_PASSWORD successfully retrieved."
   - export ARGO_PASSWORD
 
