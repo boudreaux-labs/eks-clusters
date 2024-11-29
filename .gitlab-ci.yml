@@ -26,6 +26,10 @@ cache:
 #  - ARGO_PASSWORD=$(aws secretsmanager get-secret-value --secret-id ArgoAdminPassword --query SecretString --output text | jq -r '.ArgoAdminPassword')
 #  - export ARGO_PASSWORD
 
+.id_token: &id_token
+    id_tokens:
+      MY_OIDC_TOKEN:
+        aud: https://gitlab.com
 
 default:
   before_script: 
@@ -37,7 +41,7 @@ default:
   - echo "${MY_OIDC_TOKEN}" > /tmp/web_identity_token
   - echo -e "[profile oidc]\nrole_arn=${ROLE_ARN}\nweb_identity_token_file=/tmp/web_identity_token" > ~/.aws/config
   - cat ~/.aws/config
-  #- export AWS_PROFILE=oidc
+  - export AWS_PROFILE=oidc
 
   # Retrieve the ArgoCD admin password from AWS Secrets Manager
   #- echo "MY_OIDC_TOKEN length is ${#MY_OIDC_TOKEN}"
@@ -64,12 +68,6 @@ stages:
       - ${TF_ROOT}/plan.json
       reports:
         terraform: ${TF_ROOT}/plan.json
-
-.id_token: &id_token
-    id_tokens:
-      MY_OIDC_TOKEN:
-        aud: https://gitlab.com
-
 
 dev-validate: 
   stage: validate
