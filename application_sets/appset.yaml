@@ -25,7 +25,8 @@ spec:
             #- ../../argo_config/overrides.yaml  # Environment-specific overrides
       destination:
         server: https://kubernetes.default.svc
-        namespace: '{{path.basename}}'
+        #namespace: '{{path.basename}}'
+        namespace: 'argoocd'
         createNamespace: true   # Auto-create the namespace
       syncPolicy:
         automated:
