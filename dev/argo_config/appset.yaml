@@ -9,7 +9,7 @@ spec:
         revision: main
         directories:
           - path: ghost
-          #- path: another-app
+          #- path: another-app eventually
   template:
     metadata:
       name: '{{path.basename}}'  # App name derived from directory name
@@ -21,13 +21,17 @@ spec:
         chart: '{{path.basename}}'  # Matches the folder name
         helm:
           valuesFiles:
-            - values.yaml                      # Default values in chart directory
-            #- ../../argo_config/overrides.yaml # Uncomment for external overrides
+          - values.yaml                      # Default values in chart directory
+          - overrides.yaml
+          ignoreMissingValueFiles: true
       destination:
         server: https://kubernetes.default.svc
         namespace: '{{path.basename}}'         # Namespace matches folder name
-        createNamespace: true                  # Automatically create namespace
       syncPolicy:
         automated:
           prune: true
           selfHeal: true
+        syncOptions:
+        - CreateNamespace=true
+       
+
