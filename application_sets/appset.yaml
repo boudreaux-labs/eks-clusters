@@ -9,7 +9,7 @@ spec:
         revision: main
         directories:
           - path: ghost
-          - path: another-app
+          #- path: another-app
   template:
     metadata:
       name: '{{path.basename}}'  # App name suffixed with environment
@@ -22,7 +22,7 @@ spec:
         helm:
           valuesFiles:
             - values.yaml           # Default values from the app-deploy repo
-            - ../../argo_config/overrides.yaml  # Environment-specific overrides
+            #- ../../argo_config/overrides.yaml  # Environment-specific overrides
       destination:
         server: https://kubernetes.default.svc
         namespace: '{{path.basename}}'
