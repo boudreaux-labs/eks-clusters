@@ -15,18 +15,6 @@ cache:
 #This runs before the 'script block in every job below. It sets the Profile and Web Identity Token, within the AWS config file.
 #For this to work you also need to set a Gitlab CICD variable of 'AWS_PROFILE' with a value of 'oidc'. This takes the place of key CICD variables
 #We do this so that Gitlab's deployments to AWS occur as the IAM role, not the CICD user. Best security practice and allows someone to us the role and get right into EKS without configmap changes
-#default:
-#  before_script: 
-#  - mkdir -p ~/.aws
-#  - echo "${MY_OIDC_TOKEN}" > /tmp/web_identity_token
-#  - echo -e "[profile oidc]\nrole_arn=${ROLE_ARN}\nweb_identity_token_file=/tmp/web_identity_token" > ~/.aws/config
-# - cat ~/.aws/config
-# - apk add aws-cli
-# - export AWS_PROFILE=oidc
-#  - ARGO_PASSWORD=$(aws secretsmanager get-secret-value --secret-id ArgoAdminPassword --query SecretString --output text | jq -r '.ArgoAdminPassword')
-#  - export ARGO_PASSWORD
-
-
 default:
   before_script: 
   - mkdir -p ~/.aws
@@ -37,15 +25,6 @@ default:
   - echo "${MY_OIDC_TOKEN}" > /tmp/web_identity_token
   - echo -e "[profile oidc]\nrole_arn=${ROLE_ARN}\nweb_identity_token_file=/tmp/web_identity_token" > ~/.aws/config
   - cat ~/.aws/config
-  #- echo "Environment Variables:"
-  #- env
-  #- echo "trying sts get-caller-identity"
-  #- aws sts get-caller-identity --profile oidc
-
-
-  # Retrieve the ArgoCD admin password from AWS Secrets Manager
-
-
 
 stages:
   - validate
@@ -67,7 +46,6 @@ stages:
       MY_OIDC_TOKEN:
         aud: https://gitlab.com
 
-
 dev-validate: 
   stage: validate
   script:
@@ -83,7 +61,6 @@ dev-plan:
   script:
     - cd dev
     - ARGO_PASSWORD=$(aws secretsmanager get-secret-value --secret-id ArgoAdminPassword --query SecretString --output text | jq -r '.ArgoAdminPassword')
-    #- export ARGO_PASSWORD
     - gitlab-terraform init
     - gitlab-terraform plan -var="argocd_admin_password=$ARGO_PASSWORD" -auto-approve
     - gitlab-terraform plan-json
@@ -97,6 +74,7 @@ dev-apply:
   stage: apply
   script:
     - cd dev
+    - ARGO_PASSWORD=$(aws secretsmanager get-secret-value --secret-id ArgoAdminPassword --query SecretString --output text | jq -r '.ArgoAdminPassword')
     - gitlab-terraform init
     - gitlab-terraform apply -var="argocd_admin_password=$ARGO_PASSWORD" -auto-approve
   when: manual
@@ -110,6 +88,7 @@ dev-destroy:
   stage: destroy
   script:
     - cd dev
+    - ARGO_PASSWORD=$(aws secretsmanager get-secret-value --secret-id ArgoAdminPassword --query SecretString --output text | jq -r '.ArgoAdminPassword')
     - gitlab-terraform init
     - gitlab-terraform destroy -var="argocd_admin_password=$ARGO_PASSWORD" -auto-approve
   when: manual
