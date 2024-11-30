@@ -82,7 +82,6 @@ dev-plan:
   stage: plan
   script:
     - cd dev
-    - echo "Retrieving ARGO_PASSWORD..."
     - ARGO_PASSWORD=$(aws secretsmanager get-secret-value --secret-id ArgoAdminPassword --query SecretString --output text | jq -r '.ArgoAdminPassword')
     #- export ARGO_PASSWORD
     - gitlab-terraform init
