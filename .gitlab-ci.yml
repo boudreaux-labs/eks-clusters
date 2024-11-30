@@ -37,16 +37,14 @@ default:
   - echo "${MY_OIDC_TOKEN}" > /tmp/web_identity_token
   - echo -e "[profile oidc]\nrole_arn=${ROLE_ARN}\nweb_identity_token_file=/tmp/web_identity_token" > ~/.aws/config
   - cat ~/.aws/config
-  - echo "Environment Variables:"
-  - env
-  - echo "trying sts get-caller-identity"
-  - aws sts get-caller-identity --profile oidc
+  #- echo "Environment Variables:"
+  #- env
+  #- echo "trying sts get-caller-identity"
+  #- aws sts get-caller-identity --profile oidc
 
 
   # Retrieve the ArgoCD admin password from AWS Secrets Manager
-  - echo "Retrieving ARGO_PASSWORD..."
-  - ARGO_PASSWORD=$(aws secretsmanager get-secret-value --secret-id ArgoAdminPassword --query SecretString --output text | jq -r '.ArgoAdminPassword')
-  - export ARGO_PASSWORD
+
 
 
 stages:
@@ -84,6 +82,9 @@ dev-plan:
   stage: plan
   script:
     - cd dev
+    - echo "Retrieving ARGO_PASSWORD..."
+    - ARGO_PASSWORD=$(aws secretsmanager get-secret-value --secret-id ArgoAdminPassword --query SecretString --output text | jq -r '.ArgoAdminPassword')
+    - export ARGO_PASSWORD
     - gitlab-terraform init
     - gitlab-terraform plan -var="argocd_admin_password=$ARGO_PASSWORD" -auto-approve
     - gitlab-terraform plan-json
