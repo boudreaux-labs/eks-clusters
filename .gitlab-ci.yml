@@ -61,13 +61,14 @@ dev-plan:
   script:
     - cd dev
     - export TF_VAR_argocd_admin_password=$(aws secretsmanager get-secret-value --secret-id ArgoAdminPassword --query SecretString --output text | jq -r '.ArgoAdminPassword')
-    - echo "here's TF_FAR_argocd_admin_password hash"
-    - echo "$TF_VAR_argocd_admin_password"
+    #- echo "here's TF_FAR_argocd_admin_password hash"
+    #- echo "$TF_VAR_argocd_admin_password"
     - gitlab-terraform init
     - gitlab-terraform plan
     - gitlab-terraform plan-json
   variables:
     ENVIRONMENT: dev  
+    TF_VAR_argocd_admin_password: $TF_VAR_argocd_admin_password
   <<: *artifacts
   <<: *id_token
 
@@ -81,7 +82,8 @@ dev-apply:
     - gitlab-terraform apply
   when: manual
   variables:
-    ENVIRONMENT: dev  
+    ENVIRONMENT: dev
+    TF_VAR_argocd_admin_password: $TF_VAR_argocd_admin_password  
   <<: *artifacts
   <<: *id_token
 
@@ -95,7 +97,8 @@ dev-destroy:
     - gitlab-terraform destroy -var="argocd_admin_password=$ARGO_PASSWORD" -auto-approve
   when: manual
   variables:
-    ENVIRONMENT: dev  
+    ENVIRONMENT: dev
+    TF_VAR_argocd_admin_password: $TF_VAR_argocd_admin_password  
   <<: *artifacts
   <<: *id_token
  

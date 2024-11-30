@@ -26,4 +26,5 @@ variable "cert_arn" {
 variable "argocd_admin_password" {
   description = "Admin password for ArgoCD"
   type        = string
+  sensitive   = true
 }

@@ -20,4 +20,4 @@ server:
     type: NodePort
   admin:
     enabled: true
-    password: "${argocd_admin_password}"
+    password: ""

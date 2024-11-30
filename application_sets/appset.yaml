@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: application-deployments
+spec:
+  generators:
+    - git:
+        repoURL: https://github.com/Boudreaux-labs/app-deploy.git
+        revision: main
+        directories:
+          - path: ghost
+          - path: another-app
+  template:
+    metadata:
+      name: '{{path.basename}}-{{cluster.env}}'  # App name suffixed with environment
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/Boudreaux-labs/app-deploy.git
+        targetRevision: main
+        chart: '{{path.basename}}'
+        helm:
+          valuesFiles:
+            - values.yaml           # Default values from the app-deploy repo
+            - ../../argo_config/overrides.yaml  # Environment-specific overrides
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: '{{path.basename}}-{{cluster.env}}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true

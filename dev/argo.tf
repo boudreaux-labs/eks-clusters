@@ -13,8 +13,11 @@ resource "helm_release" "argocd" {
       argocd_url            = "argocd-${var.stack}.boudreauxlabs.com"
       my_ip                 = var.my_ip
       cert_arn              = var.cert_arn
-      argocd_admin_password = var.argocd_admin_password
   })]
+  set {
+    name  = "configs.admin.password"
+    value = var.argocd_admin_password
+  }
   create_namespace = true
   namespace        = "argocd"
   description      = "The ArgoCD Helm Chart deployment configuration"
