@@ -12,21 +12,21 @@ spec:
           #- path: another-app
   template:
     metadata:
-      name: '{{path.basename}}'  # App name suffixed with environment
+      name: '{{path.basename}}'  # App name derived from directory name
     spec:
       project: default
       source:
         repoURL: https://gitlab.com/Boudreaux-labs/app-deploy.git
         targetRevision: main
-        chart: '{{path.basename}}'
+        chart: '{{path.basename}}'  # Matches the folder name
         helm:
           valuesFiles:
-            - values.yaml           # Default values from the app-deploy repo
-            #- ../../argo_config/overrides.yaml  # Environment-specific overrides
+            - values.yaml                      # Default values in chart directory
+            #- ../../argo_config/overrides.yaml # Uncomment for external overrides
       destination:
         server: https://kubernetes.default.svc
-        namespace: '{{path.basename}}'
-        createNamespace: true   # Auto-create the namespace
+        namespace: '{{path.basename}}'         # Namespace matches folder name
+        createNamespace: true                  # Automatically create namespace
       syncPolicy:
         automated:
           prune: true
