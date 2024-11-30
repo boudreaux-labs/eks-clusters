@@ -25,5 +25,5 @@ resource "helm_release" "argocd" {
 
 resource "kubernetes_manifest" "application_set" {
   manifest = yamldecode(file("${path.module}/../application_sets/appset.yaml"))
-  namespace = "argocd"
+  "namespace" = "argocd"
 }
