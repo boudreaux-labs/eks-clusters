@@ -37,10 +37,10 @@ default:
   - echo "${MY_OIDC_TOKEN}" > /tmp/web_identity_token
   - echo -e "[profile oidc]\nrole_arn=${ROLE_ARN}\nweb_identity_token_file=/tmp/web_identity_token" > ~/.aws/config
   - cat ~/.aws/config
-  - echo "trying sts get-caller-identity"
-  - aws sts get-caller-identity --profile oidc
   - echo "Environment Variables:"
   - env
+  - echo "trying sts get-caller-identity"
+  - aws sts get-caller-identity --profile oidc
 
 
   # Retrieve the ArgoCD admin password from AWS Secrets Manager
