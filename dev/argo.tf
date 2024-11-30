@@ -23,7 +23,6 @@ resource "helm_release" "argocd" {
   description      = "The ArgoCD Helm Chart deployment configuration"
 }
 
-resource "kubectl_manifest" "application_set" {
-  yaml_body = file("${path.module}/../appset.yaml") # Ensure the path matches your actual repo structure
-  depends_on = [helm_release.argocd]
+resource "kubernetes_manifest" "application_set" {
+  manifest = yamldecode(file("${path.module}/../appset.yaml"))
 }
