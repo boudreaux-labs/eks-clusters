@@ -62,7 +62,7 @@ dev-plan:
     - cd dev
     - ARGO_PASSWORD=$(aws secretsmanager get-secret-value --secret-id ArgoAdminPassword --query SecretString --output text | jq -r '.ArgoAdminPassword')
     - gitlab-terraform init
-    - gitlab-terraform plan -var="argocd_admin_password=$ARGO_PASSWORD" -auto-approve
+    - gitlab-terraform plan -var="argocd_admin_password=$ARGO_PASSWORD" #-auto-approve
     - gitlab-terraform plan-json
   variables:
     ENVIRONMENT: dev  
