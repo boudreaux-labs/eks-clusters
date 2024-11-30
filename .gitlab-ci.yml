@@ -62,7 +62,7 @@ dev-plan:
     - cd dev
     - export TF_VAR_argocd_admin_password=$(aws secretsmanager get-secret-value --secret-id ArgoAdminPassword --query SecretString --output text | jq -r '.ArgoAdminPassword')
     - echo "here's TF_FAR_argocd_admin_password hash"
-    - echo TF_VAR_argocd_admin_password
+    - echo "$TF_VAR_argocd_admin_password"
     - gitlab-terraform init
     - gitlab-terraform plan
     - gitlab-terraform plan-json
