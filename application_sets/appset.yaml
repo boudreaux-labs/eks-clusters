@@ -5,7 +5,7 @@ metadata:
 spec:
   generators:
     - git:
-        repoURL: https://github.com/Boudreaux-labs/app-deploy.git
+        repoURL: https://gitlab.com/Boudreaux-labs/app-deploy.git
         revision: main
         directories:
           - path: ghost
@@ -16,7 +16,7 @@ spec:
     spec:
       project: default
       source:
-        repoURL: https://github.com/Boudreaux-labs/app-deploy.git
+        repoURL: https://gitlab.com/Boudreaux-labs/app-deploy.git
         targetRevision: main
         chart: '{{path.basename}}'
         helm:
