@@ -60,10 +60,11 @@ dev-plan:
   stage: plan
   script:
     - cd dev
-    #- ARGO_PASSWORD=$(aws secretsmanager get-secret-value --secret-id ArgoAdminPassword --query SecretString --output text | jq -r '.ArgoAdminPassword')
     - export TF_VAR_argocd_admin_password=$(aws secretsmanager get-secret-value --secret-id ArgoAdminPassword --query SecretString --output text | jq -r '.ArgoAdminPassword')
+    - echo "here's TF_FAR_argocd_admin_password hash"
+    - echo TF_VAR_argocd_admin_password
     - gitlab-terraform init
-    - gitlab-terraform plan #-var="argocd_admin_password=$ARGO_PASSWORD" 
+    - gitlab-terraform plan
     - gitlab-terraform plan-json
   variables:
     ENVIRONMENT: dev  
@@ -75,10 +76,9 @@ dev-apply:
   stage: apply
   script:
     - cd dev
-    #- ARGO_PASSWORD=$(aws secretsmanager get-secret-value --secret-id ArgoAdminPassword --query SecretString --output text | jq -r '.ArgoAdminPassword')
     - export TF_VAR_argocd_admin_password=$(aws secretsmanager get-secret-value --secret-id ArgoAdminPassword --query SecretString --output text | jq -r '.ArgoAdminPassword')
     - gitlab-terraform init
-    - gitlab-terraform apply #-var="argocd_admin_password=$ARGO_PASSWORD" -auto-approve
+    - gitlab-terraform apply
   when: manual
   variables:
     ENVIRONMENT: dev  
@@ -90,7 +90,6 @@ dev-destroy:
   stage: destroy
   script:
     - cd dev
-    #- ARGO_PASSWORD=$(aws secretsmanager get-secret-value --secret-id ArgoAdminPassword --query SecretString --output text | jq -r '.ArgoAdminPassword')
     - export TF_VAR_argocd_admin_password=$(aws secretsmanager get-secret-value --secret-id ArgoAdminPassword --query SecretString --output text | jq -r '.ArgoAdminPassword')
     - gitlab-terraform init
     - gitlab-terraform destroy -var="argocd_admin_password=$ARGO_PASSWORD" -auto-approve
