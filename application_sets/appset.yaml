@@ -26,6 +26,7 @@ spec:
       destination:
         server: https://kubernetes.default.svc
         namespace: '{{path.basename}}'
+        createNamespace: true   # Auto-create the namespace
       syncPolicy:
         automated:
           prune: true
