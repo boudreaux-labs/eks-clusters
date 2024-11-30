@@ -39,6 +39,9 @@ default:
   - cat ~/.aws/config
   - echo "trying sts get-caller-identity"
   - aws sts get-caller-identity --profile oidc
+  - echo "Environment Variables:"
+  - env
+
 
   # Retrieve the ArgoCD admin password from AWS Secrets Manager
   - echo "Retrieving ARGO_PASSWORD..."
