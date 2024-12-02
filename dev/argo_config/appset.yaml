@@ -21,7 +21,7 @@ spec:
         targetRevision: main
         chart: '{{path.basename}}'  # Matches the folder name
         helm:
-          valuesFiles:
+          valueFiles:
           - values.yaml                      # Default values in chart directory
           - overrides.yaml
           ignoreMissingValueFiles: true

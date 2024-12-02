@@ -23,6 +23,6 @@ resource "helm_release" "argocd" {
   description      = "The ArgoCD Helm Chart deployment configuration"
 }
 
-resource "kubernetes_manifest" "application_set" {
-  manifest = yamldecode(file("${path.module}/argo_config/appset.yaml"))
-}
+#resource "kubernetes_manifest" "application_set" {
+#  manifest = yamldecode(file("${path.module}/argo_config/appset.yaml"))
+#}
