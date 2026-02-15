@@ -12,7 +12,7 @@ variable "stack" {
   default     = "dev"
 }
 variable "cluster_version" {
-  default = "1.27"
+  default = "1.31"
 }
 variable "cluster_name" {
   default = "eks-dev"
