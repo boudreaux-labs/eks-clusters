@@ -8,6 +8,8 @@ module "eks-load-balancer-controller" {
   #optional variables
   irsa_role_create                 = true
   irsa_policy_enabled              = true
+  helm_wait                        = true
+  helm_wait_for_jobs               = true
 }
 
 module "eks-external-dns" {
