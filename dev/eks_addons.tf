@@ -10,6 +10,7 @@ module "eks-load-balancer-controller" {
   irsa_policy_enabled              = true
   helm_wait                        = true
   helm_wait_for_jobs               = true
+  helm_timeout                     = 600
 }
 
 module "eks-external-dns" {
