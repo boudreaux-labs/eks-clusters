@@ -36,6 +36,22 @@ module "eks" {
   subnet_ids               = module.vpc.private_subnets
   control_plane_subnet_ids = module.vpc.private_subnets
 
+  # Grant CI/CD role cluster admin access
+  enable_cluster_creator_admin_permissions = false
+  access_entries = {
+    ci_admin = {
+      principal_arn = "arn:aws:iam::842851109414:role/boudreaux-admin"
+      policy_associations = {
+        admin = {
+          policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+          access_scope = {
+            type = "cluster"
+          }
+        }
+      }
+    }
+  }
+
   # EKS Managed Node Group(s)
   eks_managed_node_groups = {
     default_nodegroup = {
