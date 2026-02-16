@@ -7,6 +7,7 @@ image:
 variables:
   TF_ROOT: ${ENVIRONMENT}
   TF_STATE_NAME: default
+  TF_LOG: DEBUG
 
 cache:
   key: "${TF_ROOT}"
