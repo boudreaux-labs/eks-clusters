@@ -40,7 +40,7 @@ module "eks" {
   enable_cluster_creator_admin_permissions = false
   access_entries = {
     ci_admin = {
-      principal_arn = "arn:aws:iam::842851109414:role/boudreaux-admin"
+      principal_arn = var.ci_role_arn
       policy_associations = {
         admin = {
           policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"

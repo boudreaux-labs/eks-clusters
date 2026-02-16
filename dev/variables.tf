@@ -28,3 +28,8 @@ variable "argocd_admin_password" {
   type        = string
   sensitive   = true
 }
+
+variable "ci_role_arn" {
+  description = "IAM role ARN for CI/CD pipeline"
+  type        = string
+}
