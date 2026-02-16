@@ -1,5 +1,5 @@
 variable "my_ip" {
-  default = "104.28.116.0/24"
+  default = "50.35.179.50/24"
   description = "My IP"
 }
 variable "region" {

@@ -37,8 +37,11 @@ module "eks" {
       min_size       = 1
       max_size       = 2
       desired_size   = 1
-      instance_types = ["t3.large"]
+      instance_types = ["t3.large", "t3a.large"]
       capacity_type  = "SPOT"
+      
+      # Attach to cluster primary security group for proper communication
+      attach_cluster_primary_security_group = true
     }
   }
 
