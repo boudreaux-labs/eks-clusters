@@ -3,10 +3,14 @@
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "21.15.1"
-  cluster_name    = var.cluster_name
-  cluster_version = var.cluster_version
-  cluster_endpoint_public_access = true
-  cluster_addons = {
+  
+  name               = var.cluster_name
+  kubernetes_version = var.cluster_version
+  
+  endpoint_public_access  = true
+  endpoint_private_access = true
+  
+  addons = {
     coredns = {
       most_recent = true
     }
@@ -22,24 +26,17 @@ module "eks" {
       most_recent = true
     }  
   }
-  
 
   vpc_id                   = module.vpc.vpc_id
   subnet_ids               = module.vpc.private_subnets
   control_plane_subnet_ids = module.vpc.private_subnets
 
-
-
   # EKS Managed Node Group(s)
-  eks_managed_node_group_defaults = {
-    instance_types = ["t3.large"]
-  }
-
   eks_managed_node_groups = {
     default_nodegroup = {
-      min_size     = 1
-      max_size     = 2
-      desired_size = 1
+      min_size       = 1
+      max_size       = 2
+      desired_size   = 1
       instance_types = ["t3.large"]
       capacity_type  = "SPOT"
     }
@@ -49,6 +46,4 @@ module "eks" {
     Environment = var.stack
     Terraform   = "true"
   }
-
-
 }
