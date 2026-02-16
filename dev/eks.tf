@@ -10,17 +10,22 @@ module "eks" {
   endpoint_public_access  = true
   endpoint_private_access = true
   
+  # Install vpc-cni before compute so nodes can get IPs
+  bootstrap_self_managed_addons = false
+  
   addons = {
     coredns = {
       most_recent = true
     }
     kube-proxy = {
-      most_recent = true
+      most_recent              = true
+      before_compute           = true
       resolve_conflicts_on_create = "OVERWRITE"
       resolve_conflicts_on_update = "OVERWRITE"
     }
     vpc-cni = {
-      most_recent = true
+      most_recent    = true
+      before_compute = true
     }
     aws-ebs-csi-driver = {
       most_recent = true
