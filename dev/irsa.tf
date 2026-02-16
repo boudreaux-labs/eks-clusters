@@ -3,10 +3,10 @@
 ### VPN CNI
 
 module "irsa-vpc-cni" {
-  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts"
   version = "~> 6.0"
 
-  role_name             = "vpc_cni"
+  name                  = "vpc_cni"
   attach_vpc_cni_policy = true
   vpc_cni_enable_ipv4   = true
 
@@ -26,10 +26,10 @@ module "irsa-vpc-cni" {
 ### EBS CSI
 
 module "irsa-ebs-csi" {
-  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts"
   version = "~> 6.0"
 
-  role_name             = "ebs-csi"
+  name                  = "ebs-csi"
   attach_ebs_csi_policy = true
 
   oidc_providers = {
