@@ -26,7 +26,7 @@ module "eks" {
     }
     aws-ebs-csi-driver = {
       most_recent                 = true
-      service_account_role_arn    = module.irsa-ebs-csi.iam_role_arn
+      service_account_role_arn    = module.irsa-ebs-csi.role_arn
       resolve_conflicts_on_create = "OVERWRITE"
       resolve_conflicts_on_update = "OVERWRITE"
     }  
