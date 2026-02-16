@@ -1,104 +1,84 @@
-#A pipeline thats a combination from stuff I saw at work and my own desire to have all my terraform build as an IAM role that Gitlab assumes (hence the token stuff)
+# Simple Terraform pipeline using HashiCorp official image with OIDC authentication
 
 image:
-  name: "registry.gitlab.com/gitlab-org/terraform-images/releases/1.8.0"
+  name: hashicorp/terraform:1.10
+  entrypoint: [""]
 
 variables:
-  TF_ROOT: ${ENVIRONMENT}  # The relative path to the root directory of the Terraform project
-  TF_STATE_NAME: default      # The name of the state file used by the GitLab Managed Terraform state backend
+  TF_ROOT: ${ENVIRONMENT}
+  TF_STATE_NAME: default
 
 cache:
   key: "${TF_ROOT}"
   paths:
     - ${TF_ROOT}/.terraform/
 
-#This runs before the 'script block in every job below. It sets the Profile and Web Identity Token, within the AWS config file.
-#For this to work you also need to set a Gitlab CICD variable of 'AWS_PROFILE' with a value of 'oidc'. This takes the place of key CICD variables
-#We do this so that Gitlab's deployments to AWS occur as the IAM role, not the CICD user. Best security practice and allows someone to us the role and get right into EKS without configmap changes
+# Configure AWS OIDC authentication before each job
 default:
-  before_script: 
-  - mkdir -p ~/.aws
-  # Install necessary tools
-  - apk add --no-cache aws-cli jq
-
-  # Configure AWS profile for OIDC role assumption
-  - echo "${MY_OIDC_TOKEN}" > /tmp/web_identity_token
-  - echo -e "[profile oidc]\nrole_arn=${ROLE_ARN}\nweb_identity_token_file=/tmp/web_identity_token" > ~/.aws/config
-  - cat ~/.aws/config
+  before_script:
+    - apk add --no-cache aws-cli jq
+    - mkdir -p ~/.aws
+    - echo "${MY_OIDC_TOKEN}" > /tmp/web_identity_token
+    - echo -e "[profile oidc]\nrole_arn=${ROLE_ARN}\nweb_identity_token_file=/tmp/web_identity_token" > ~/.aws/config
+    - export AWS_PROFILE=oidc
 
 stages:
   - validate
   - plan
   - apply
   - destroy
-  
-.artifacts: &artifacts
-    artifacts:
-      name: plan
-      paths:
-      - ${TF_ROOT}/plan.cache
-      - ${TF_ROOT}/plan.json
-      reports:
-        terraform: ${TF_ROOT}/plan.json
 
 .id_token: &id_token
-    id_tokens:
-      MY_OIDC_TOKEN:
-        aud: https://gitlab.com
+  id_tokens:
+    MY_OIDC_TOKEN:
+      aud: https://gitlab.com
 
-dev-validate: 
+dev-validate:
   stage: validate
   script:
     - cd dev
-    - gitlab-terraform init
-    - gitlab-terraform validate
+    - terraform init
+    - terraform validate
   variables:
-    ENVIRONMENT: dev    
+    ENVIRONMENT: dev
 
-
-dev-plan: 
+dev-plan:
   stage: plan
   script:
     - cd dev
     - export TF_VAR_argocd_admin_password=$(aws secretsmanager get-secret-value --secret-id ArgoAdminPassword --query SecretString --output text | jq -r '.ArgoAdminPassword')
-    #- echo "here's TF_FAR_argocd_admin_password hash"
-    #- echo "$TF_VAR_argocd_admin_password"
-    - gitlab-terraform init
-    - gitlab-terraform plan
-    - gitlab-terraform plan-json
+    - terraform init
+    - terraform plan -out=plan.cache
+  artifacts:
+    paths:
+      - dev/plan.cache
+    expire_in: 1 week
   variables:
-    ENVIRONMENT: dev  
-    TF_VAR_argocd_admin_password: $TF_VAR_argocd_admin_password
-  <<: *artifacts
+    ENVIRONMENT: dev
   <<: *id_token
 
-
-dev-apply: 
+dev-apply:
   stage: apply
   script:
     - cd dev
     - export TF_VAR_argocd_admin_password=$(aws secretsmanager get-secret-value --secret-id ArgoAdminPassword --query SecretString --output text | jq -r '.ArgoAdminPassword')
-    - gitlab-terraform init
-    - gitlab-terraform apply
+    - terraform init
+    - terraform apply -auto-approve plan.cache
   when: manual
+  dependencies:
+    - dev-plan
   variables:
     ENVIRONMENT: dev
-    TF_VAR_argocd_admin_password: $TF_VAR_argocd_admin_password  
-  <<: *artifacts
   <<: *id_token
 
-
-dev-destroy: 
+dev-destroy:
   stage: destroy
   script:
     - cd dev
     - export TF_VAR_argocd_admin_password=$(aws secretsmanager get-secret-value --secret-id ArgoAdminPassword --query SecretString --output text | jq -r '.ArgoAdminPassword')
-    - gitlab-terraform init
-    - gitlab-terraform destroy -var="argocd_admin_password=$ARGO_PASSWORD" -auto-approve
+    - terraform init
+    - terraform destroy -auto-approve
   when: manual
   variables:
     ENVIRONMENT: dev
-    TF_VAR_argocd_admin_password: $TF_VAR_argocd_admin_password  
-  <<: *artifacts
   <<: *id_token
- 
