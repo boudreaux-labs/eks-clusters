@@ -10,9 +10,6 @@ module "eks" {
   endpoint_public_access  = true
   endpoint_private_access = true
   
-  # Install vpc-cni before compute so nodes can get IPs
-  bootstrap_self_managed_addons = false
-  
   addons = {
     coredns = {
       most_recent = true
