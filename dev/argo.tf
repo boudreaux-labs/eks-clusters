@@ -4,20 +4,20 @@ resource "helm_release" "argocd" {
   name       = "argocd"
   repository = "https://argoproj.github.io/argo-helm"
   chart      = "argo-cd"
-  version    = "5.46.2"
+  version    = "7.7.3"
   timeout    = 1200
   depends_on = [module.eks, module.eks-load-balancer-controller, module.vpc]
   values = [templatefile("${path.module}/argo_config/values.yaml",
     {
-      argocd_repo_url       = "https://gitlab.com/boudreaux-labs/app-deploy"
-      argocd_url            = "argocd-${var.stack}.boudreauxlabs.com"
-      my_ip                 = var.my_ip
-      cert_arn              = var.cert_arn
+      argocd_url = "argocd-${var.stack}.boudreauxlabs.com"
+      cert_arn   = var.cert_arn
   })]
-  set {
-    name  = "configs.admin.password"
-    value = var.argocd_admin_password
+  
+  set_sensitive {
+    name  = "configs.secret.argocdServerAdminPassword"
+    value = bcrypt(var.argocd_admin_password)
   }
+  
   create_namespace = true
   namespace        = "argocd"
   description      = "The ArgoCD Helm Chart deployment configuration"
