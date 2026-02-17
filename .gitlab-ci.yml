@@ -74,6 +74,7 @@ dev-apply:
     - terraform apply -auto-approve plan.cache
   dependencies:
     - dev-plan
+  when: manual
   variables:
     ENVIRONMENT: dev
   <<: *id_token

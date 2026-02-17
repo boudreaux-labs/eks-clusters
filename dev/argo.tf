@@ -6,7 +6,7 @@ resource "helm_release" "argocd" {
   chart      = "argo-cd"
   version    = "7.7.3"
   timeout    = 1200
-  depends_on = [module.eks, module.eks-load-balancer-controller, module.vpc]
+  depends_on = [module.eks, helm_release.aws_load_balancer_controller, module.vpc]
   values = [templatefile("${path.module}/argo_config/values.yaml",
     {
       argocd_url = "argocd-${var.stack}.boudreauxlabs.com"
