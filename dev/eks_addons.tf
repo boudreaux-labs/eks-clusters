@@ -25,7 +25,7 @@ resource "helm_release" "aws_load_balancer_controller" {
   
   set {
     name  = "serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn"
-    value = module.irsa-lb-controller.iam_role_arn
+    value = module.irsa-lb-controller.arn
   }
   
   set {
@@ -75,7 +75,7 @@ resource "helm_release" "external_dns" {
   
   set {
     name  = "serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn"
-    value = module.irsa-external-dns.iam_role_arn
+    value = module.irsa-external-dns.arn
   }
 
   wait    = true
