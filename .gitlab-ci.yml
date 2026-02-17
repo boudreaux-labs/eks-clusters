@@ -86,6 +86,7 @@ dev-destroy:
     - terraform init
     - terraform destroy -auto-approve
   when: manual
+  needs: []
   variables:
     ENVIRONMENT: dev
   <<: *id_token

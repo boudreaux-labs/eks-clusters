@@ -12,9 +12,11 @@ module "eks-load-balancer-controller" {
   helm_timeout                     = 300
   
   # Allow Ingress creation even if webhook isn't ready yet
-  settings = {
-    "webhookConfig.failurePolicy" = "Ignore"
-  }
+  values = <<-EOT
+    enableCertManager: false
+    webhookConfig:
+      failurePolicy: Ignore
+  EOT
 }
 
 module "eks-external-dns" {
