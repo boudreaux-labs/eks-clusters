@@ -21,7 +21,7 @@ variable "cidr_block"{
   default = "10.0.0.0/16"
 }
 variable "cert_arn" {
-  default = "arn:aws:acm:us-east-1:842851109414:certificate/c7cadf29-ae16-4a0d-8c37-f89929ab4f8e"
+  default = "arn:aws:acm:us-east-1:842851109414:certificate/babbb338-a5aa-465d-88c3-2f9c94af261a"
 }
 variable "argocd_admin_password" {
   description = "Admin password for ArgoCD"
