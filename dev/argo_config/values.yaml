@@ -11,6 +11,8 @@ server:
       alb.ingress.kubernetes.io/certificate-arn: "${cert_arn}"
       alb.ingress.kubernetes.io/target-type: ip
       alb.ingress.kubernetes.io/healthcheck-protocol: HTTPS
+      alb.ingress.kubernetes.io/healthcheck-path: /healthz
+      alb.ingress.kubernetes.io/success-codes: "200"
       external-dns.alpha.kubernetes.io/hostname: ${argocd_url}
     tls:
       - hosts:
