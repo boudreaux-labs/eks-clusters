@@ -2,8 +2,7 @@ server:
   ingress:
     enabled: true
     ingressClassName: alb
-    hosts:
-      - ${argocd_url}
+    hostname: ${argocd_url}
     annotations:
       alb.ingress.kubernetes.io/scheme: internet-facing
       alb.ingress.kubernetes.io/backend-protocol: HTTPS
@@ -15,17 +14,7 @@ server:
       alb.ingress.kubernetes.io/healthcheck-path: /healthz
       alb.ingress.kubernetes.io/success-codes: "200"
       external-dns.alpha.kubernetes.io/hostname: ${argocd_url}
-    tls:
-      - hosts:
-          - ${argocd_url}
-  ingressGrpc:
-    enabled: true
-    isAWSALB: true
-    awsALB:
-      serviceType: ClusterIP
-      backendProtocolVersion: GRPC
-    hosts:
-      - ${argocd_url}
+    tls: false
 
 configs:
   params:
