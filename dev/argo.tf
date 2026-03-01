@@ -11,6 +11,7 @@ resource "helm_release" "argocd" {
     {
       argocd_url = "argocd-${var.stack}.boudreauxlabs.com"
       cert_arn   = var.cert_arn
+      my_ip      = var.my_ip
   })]
   
   set_sensitive {
