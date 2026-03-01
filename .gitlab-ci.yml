@@ -1,7 +1,7 @@
-# Simple Terraform pipeline using HashiCorp official image with OIDC authentication
+# Terraform pipeline with custom runner image and OIDC authentication
 
 image:
-  name: hashicorp/terraform:1.10
+  name: ${CI_REGISTRY_IMAGE}/terraform-runner:latest
   entrypoint: [""]
 
 variables:
@@ -24,31 +24,39 @@ cache:
 # Configure AWS OIDC authentication before each job
 default:
   before_script:
-    - apk add --no-cache aws-cli jq
     - mkdir -p ~/.aws
     - echo "${MY_OIDC_TOKEN}" > /tmp/web_identity_token
     - echo -e "[profile oidc]\nrole_arn=${ROLE_ARN}\nweb_identity_token_file=/tmp/web_identity_token" > ~/.aws/config
     - export AWS_PROFILE=oidc
 
 stages:
-  #- validate
+  - build
   - plan
   - apply
   - destroy
+
+# Build and push custom runner image to GitLab Container Registry
+build-image:
+  stage: build
+  image:
+    name: gcr.io/kaniko-project/executor:v1.23.2-debug
+    entrypoint: [""]
+  before_script: []
+  script:
+    - mkdir -p /kaniko/.docker
+    - echo "{\"auths\":{\"${CI_REGISTRY}\":{\"auth\":\"$(echo -n ${CI_REGISTRY_USER}:${CI_REGISTRY_PASSWORD} | base64)\"}}}" > /kaniko/.docker/config.json
+    - /kaniko/executor
+      --context "${CI_PROJECT_DIR}"
+      --dockerfile "${CI_PROJECT_DIR}/Dockerfile"
+      --destination "${CI_REGISTRY_IMAGE}/terraform-runner:latest"
+  rules:
+    - changes:
+        - Dockerfile
 
 .id_token: &id_token
   id_tokens:
     MY_OIDC_TOKEN:
       aud: https://gitlab.com
-
-#dev-validate:
-#  stage: validate
-#  script:
-#    - cd dev
-#    - terraform init
-#    - terraform validate
-#  variables:
-#    ENVIRONMENT: dev
 
 dev-plan:
   stage: plan
