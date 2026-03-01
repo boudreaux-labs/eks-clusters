@@ -52,6 +52,17 @@ module "eks" {
     }
   }
 
+  node_security_group_additional_rules = {
+    ingress_alb_https_pod_port = {
+      description = "Allow ALB to reach pods on ArgoCD HTTPS port"
+      protocol    = "tcp"
+      from_port   = 8080
+      to_port     = 8080
+      type        = "ingress"
+      cidr_blocks = [module.vpc.vpc_cidr_block]
+    }
+  }
+
   # EKS Managed Node Group(s)
   eks_managed_node_groups = {
     default_nodegroup = {
