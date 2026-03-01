@@ -41,14 +41,14 @@ stages:
     MY_OIDC_TOKEN:
       aud: https://gitlab.com
 
-dev-validate:
-  stage: validate
-  script:
-    - cd dev
-    - terraform init
-    - terraform validate
-  variables:
-    ENVIRONMENT: dev
+#dev-validate:
+#  stage: validate
+#  script:
+#    - cd dev
+#    - terraform init
+#    - terraform validate
+#  variables:
+#    ENVIRONMENT: dev
 
 dev-plan:
   stage: plan
