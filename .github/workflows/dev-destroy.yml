@@ -33,5 +33,6 @@ jobs:
       - name: Terraform Destroy
         run: |
           export TF_VAR_ci_role_arn="${{ vars.ROLE_ARN }}"
+          export TF_VAR_cert_arn="${{ vars.CERT_ARN }}"
           export TF_VAR_argocd_admin_password="$(aws secretsmanager get-secret-value --secret-id ArgoAdminPassword --query SecretString --output text | jq -r '.ArgoAdminPassword')"
           terraform destroy -auto-approve

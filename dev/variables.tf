@@ -21,7 +21,8 @@ variable "cidr_block"{
   default = "10.0.0.0/16"
 }
 variable "cert_arn" {
-  default = "arn:aws:acm:us-east-1:842851109414:certificate/babbb338-a5aa-465d-88c3-2f9c94af261a"
+  description = "ACM certificate ARN for boudreauxlabs.com — set via CERT_ARN GitHub Actions variable"
+  type        = string
 }
 variable "argocd_admin_password" {
   description = "Admin password for ArgoCD"
