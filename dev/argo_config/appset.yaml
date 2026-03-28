@@ -6,18 +6,17 @@ metadata:
 spec:
   generators:
     - git:
-        repoURL: https://gitlab.com/Boudreaux-labs/app-deploy.git
+        repoURL: https://github.com/boudreaux-labs/gitops.git
         revision: main
         directories:
-          - path: ghost
-          #- path: another-app eventually
+          - path: '*'
   template:
     metadata:
       name: '{{path.basename}}'  # App name derived from directory name
     spec:
       project: default
       source:
-        repoURL: https://gitlab.com/Boudreaux-labs/app-deploy.git
+        repoURL: https://github.com/boudreaux-labs/gitops.git
         targetRevision: main
         chart: '{{path.basename}}'  # Matches the folder name
         helm:

@@ -41,7 +41,7 @@ Set these in GitHub → Settings → Secrets and variables → Actions:
 
 - **Ephemeral** — cluster is destroyed at end of each working session; apply/destroy are cheap one-click operations
 - **Zero manual steps** — no `kubectl` or console changes after apply; everything declarative
-- **GitOps delivery** — ArgoCD pulls app state from the [app-deploy](https://github.com/boudreaux-labs/app-deploy) repo; pipelines never push to the cluster
+- **GitOps delivery** — ArgoCD pulls app state from the [gitops](https://github.com/boudreaux-labs/gitops) repo; pipelines never push to the cluster
 
 ## Claude Code
 
