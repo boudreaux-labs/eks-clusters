@@ -1,0 +1,74 @@
+name: dev
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  plan:
+    name: Terraform Plan
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: dev
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.ROLE_ARN }}
+          aws-region: us-east-1
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "~1.10"
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Plan
+        run: |
+          export TF_VAR_ci_role_arn="${{ vars.ROLE_ARN }}"
+          export TF_VAR_argocd_admin_password="$(aws secretsmanager get-secret-value --secret-id ArgoAdminPassword --query SecretString --output text | jq -r '.ArgoAdminPassword')"
+          terraform plan -out=plan.cache
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: plan-cache
+          path: dev/plan.cache
+          retention-days: 7
+
+  apply:
+    name: Terraform Apply
+    needs: plan
+    runs-on: ubuntu-latest
+    environment: dev
+    defaults:
+      run:
+        working-directory: dev
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.ROLE_ARN }}
+          aws-region: us-east-1
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "~1.10"
+
+      - name: Terraform Init
+        run: terraform init
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: plan-cache
+          path: dev/
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve plan.cache

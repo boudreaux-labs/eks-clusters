@@ -1,7 +1,12 @@
 terraform {
   required_version = ">= 1.0"
 
-  backend "http" {
+  backend "s3" {
+    bucket         = "boudreaux-labs-terraform-state"
+    key            = "eks-clusters/dev/terraform.tfstate"
+    region         = "us-east-1"
+    dynamodb_table = "boudreaux-labs-terraform-locks"
+    encrypt        = true
   }
 
   required_providers {
