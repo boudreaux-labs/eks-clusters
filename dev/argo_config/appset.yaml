@@ -1,37 +1,30 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: application-deployments
+  name: platform-apps
   namespace: argocd
 spec:
   generators:
     - git:
         repoURL: https://github.com/boudreaux-labs/gitops.git
         revision: main
-        directories:
-          - path: '*'
+        files:
+          - path: "apps/*.yaml"
   template:
     metadata:
-      name: '{{path.basename}}'  # App name derived from directory name
+      name: '{{appName}}'
     spec:
       project: default
       source:
-        repoURL: https://github.com/boudreaux-labs/gitops.git
-        targetRevision: main
-        chart: '{{path.basename}}'  # Matches the folder name
-        helm:
-          valueFiles:
-          - values.yaml                      # Default values in chart directory
-          - overrides.yaml
-          ignoreMissingValueFiles: true
+        repoURL: '{{repoURL}}'
+        targetRevision: '{{targetRevision}}'
+        path: '{{path}}'
       destination:
         server: https://kubernetes.default.svc
-        namespace: '{{path.basename}}'         # Namespace matches folder name
+        namespace: '{{namespace}}'
       syncPolicy:
         automated:
           prune: true
           selfHeal: true
         syncOptions:
-        - CreateNamespace=true
-       
-
+          - CreateNamespace=true
