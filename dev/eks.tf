@@ -61,6 +61,14 @@ module "eks" {
       type        = "ingress"
       cidr_blocks = [module.vpc.vpc_cidr_block]
     }
+    ingress_alb_http_pod_port = {
+      description = "Allow ALB to reach pods on HTTP port (app workloads)"
+      protocol    = "tcp"
+      from_port   = 80
+      to_port     = 80
+      type        = "ingress"
+      cidr_blocks = [module.vpc.vpc_cidr_block]
+    }
   }
 
   # EKS Managed Node Group(s)
