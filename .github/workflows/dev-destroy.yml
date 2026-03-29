@@ -40,18 +40,6 @@ jobs:
               {
                 \"Action\": \"UPSERT\",
                 \"ResourceRecordSet\": {
-                  \"Name\": \"boudreauxlabs.com\",
-                  \"Type\": \"A\",
-                  \"AliasTarget\": {
-                    \"HostedZoneId\": \"$CF_ZONE_ID\",
-                    \"DNSName\": \"$CF_DOMAIN\",
-                    \"EvaluateTargetHealth\": false
-                  }
-                }
-              },
-              {
-                \"Action\": \"UPSERT\",
-                \"ResourceRecordSet\": {
                   \"Name\": \"www.boudreauxlabs.com\",
                   \"Type\": \"A\",
                   \"AliasTarget\": {
