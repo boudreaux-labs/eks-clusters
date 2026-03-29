@@ -1,6 +1,6 @@
 variable "my_ip" {
-  default = "50.35.179.50/24"
-  description = "My IP"
+  description = "Home IP CIDR allowed to reach ArgoCD — set via MY_IP GitHub Actions variable"
+  type        = string
 }
 variable "region" {
   default     = "us-east-1"
