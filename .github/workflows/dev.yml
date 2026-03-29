@@ -79,5 +79,6 @@ jobs:
       - name: Bootstrap ArgoCD root app
         run: |
           aws eks update-kubeconfig --name eks-dev --region us-east-1
+          kubectl apply -f argo_config/boudreaux-labs-repo-creds.yaml
           kubectl apply -f argo_config/gitops-repo.yaml
           kubectl apply -f argo_config/root-app.yaml
