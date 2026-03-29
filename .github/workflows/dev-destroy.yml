@@ -57,7 +57,7 @@ jobs:
           LB_ARNS=$(aws elbv2 describe-load-balancers --query "LoadBalancers[*].LoadBalancerArn" --output text)
           for ARN in $LB_ARNS; do
             TAGS=$(aws elbv2 describe-tags --resource-arns "$ARN" --query "TagDescriptions[0].Tags" --output json)
-            if echo "$TAGS" | grep -qE "eks-dev|elbv2\.k8s\.aws/cluster"; then
+            if echo "$TAGS" | grep -q '"elbv2.k8s.aws/cluster".*"eks-dev"'; then
               echo "Deleting ALB: $ARN"
               aws elbv2 delete-load-balancer --load-balancer-arn "$ARN"
             fi
