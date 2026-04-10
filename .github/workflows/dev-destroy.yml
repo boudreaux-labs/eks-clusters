@@ -55,14 +55,31 @@ jobs:
       - name: Delete cluster-owned load balancers
         run: |
           LB_ARNS=$(aws elbv2 describe-load-balancers --query "LoadBalancers[*].LoadBalancerArn" --output text)
+          DELETED_ARNS=()
           for ARN in $LB_ARNS; do
             TAGS=$(aws elbv2 describe-tags --resource-arns "$ARN" --query "TagDescriptions[0].Tags" --output json)
-            if echo "$TAGS" | grep -q '"elbv2.k8s.aws/cluster".*"eks-dev"'; then
+            if echo "$TAGS" | jq -e '.[] | select(.Key == "elbv2.k8s.aws/cluster" and .Value == "eks-dev")' > /dev/null 2>&1; then
               echo "Deleting ALB: $ARN"
               aws elbv2 delete-load-balancer --load-balancer-arn "$ARN"
+              DELETED_ARNS+=("$ARN")
             fi
           done
-          sleep 30
+          if [ ${#DELETED_ARNS[@]} -gt 0 ]; then
+            echo "Waiting for ALBs to finish deleting..."
+            for ARN in "${DELETED_ARNS[@]}"; do
+              for i in $(seq 1 20); do
+                STATE=$(aws elbv2 describe-load-balancers --load-balancer-arns "$ARN" --query "LoadBalancers[0].State.Code" --output text 2>/dev/null || echo "deleted")
+                if [ "$STATE" = "deleted" ] || [ "$STATE" = "None" ] || [ -z "$STATE" ]; then
+                  echo "ALB deleted: $ARN"
+                  break
+                fi
+                echo "  state=$STATE, waiting... ($i/20)"
+                sleep 10
+              done
+            done
+            echo "Sleeping 30s for ENI release..."
+            sleep 30
+          fi
 
       - name: Terraform Destroy
         run: |
